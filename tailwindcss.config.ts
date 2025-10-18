@@ -1,5 +1,5 @@
 /** @type {import("tailwindcss").Config} */
-module.exports = {
+export default {
 	"content": [
 		"./src/app.html",
 		"./src/pages/**/*.svelte",
@@ -46,8 +46,5 @@ module.exports = {
 		]
 	},
 	"variants": {},
-	"plugins": [
-		require("@tailwindcss/typography"),
-		require("daisyui")
-	]
+	"plugins": []
 }

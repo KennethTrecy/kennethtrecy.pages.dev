@@ -1,11 +1,23 @@
-import { type UserConfig } from "vite"
-
+import { defineConfig } from "vite"
+import tailwindcss from "@tailwindcss/vite"
+import autoprefixer from "autoprefixer"
 import { sveltekit } from "@sveltejs/kit/vite"
 
-const configuration: UserConfig = {
+export default defineConfig(({ mode }) => ({
 	"plugins": [
-		sveltekit()
+		sveltekit(),
+		tailwindcss()
 	],
+	"css": {
+		"postcss": {
+			"plugins": [
+				autoprefixer({
+					"cascade": true
+				})
+			]
+		},
+		"transformer": "postcss"
+	},
 	"server": {
 		"port": Number(process.env.PORT || "7000"),
 		"hmr": {
@@ -13,11 +25,14 @@ const configuration: UserConfig = {
 			"port": 7000,
 			"host": "localhost",
 			"protocol": "ws"
-		}
+		},
+		"allowedHosts": true
 	},
 	"test": {
+		"environment": "jsdom",
 		"include": [ "src/**/*.spec.ts" ]
-	}
-}
-
-export default configuration
+	},
+	"resolve":	{
+		"conditions": mode === "test" ? ["browser"] : [],
+	},
+}))
