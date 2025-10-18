@@ -1,127 +1,127 @@
 <script lang="ts">
-	import { type ReferenceInfo } from "@/types/reference"
+import { type ReferenceInfo } from "@/types/reference"
 
-	import { internalTypes } from "@/components/general/links/constants"
-	import pageMeta from "@/routes/website_info/publishing_principles/meta"
-	import {
-		draftStatusID,
-		draftStatusURL,
-		pageStatusSetID,
-		pageStatusSetURL,
-		publishedStatusID,
-		publishedStatusURL
-	} from "@/constants/schema_collection"
+import { internalTypes } from "@/components/general/links/constants"
+import pageMeta from "@/routes/website_info/publishing_principles/meta"
+import {
+	draftStatusID,
+	draftStatusURL,
+	pageStatusSetID,
+	pageStatusSetURL,
+	publishedStatusID,
+	publishedStatusURL
+} from "@/constants/schema_collection"
 
-	import BaseLink from "@/components/general/links/base.svelte"
-	import CommonHead from "@/components/general/common_head.svelte"
-	import Citation from "@/components/general/links/citation.svelte"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
-	import PrimaryHeading from "@/components/general/headings/primary.svelte"
-	import PageDetailCard from "@/components/general/card/page_detail.svelte"
-	import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import QuaternaryHeading from "@/components/general/headings/quaternary.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import StructuredArticle from "@/components/general/containers/structured_article.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import StructuredReference from "@/components/general/containers/structured_reference.svelte"
-	import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
+import BaseLink from "@/components/general/links/base.svelte"
+import CommonHead from "@/components/general/common_head.svelte"
+import Citation from "@/components/general/links/citation.svelte"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import PrimaryHeading from "@/components/general/headings/primary.svelte"
+import PageDetailCard from "@/components/general/card/page_detail.svelte"
+import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import QuaternaryHeading from "@/components/general/headings/quaternary.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import StructuredArticle from "@/components/general/containers/structured_article.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import StructuredReference from "@/components/general/containers/structured_reference.svelte"
+import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
 
-	const overview = defineHeadingInfo({
-		"prefix": "🌄",
-		"text": "Overview"
-	})
-	const pageGuidelines = defineHeadingInfo({
-		"prefix": "📃",
-		"text": "Guidelines for Web Pages"
-	})
-	const pageStatusSet = defineHeadingInfo({
-		"prefix": "🔁",
-		"text": "List of Page Statuses",
-		"id": pageStatusSetID
-	})
-	const draftStatus = defineHeadingInfo({
-		"prefix": "📄",
-		"text": "Draft",
-		"id": draftStatusID
-	})
-	const publishedStatus = defineHeadingInfo({
-		"prefix": "📰",
-		"text": "Published",
-		"id": publishedStatusID
-	})
-	const pageVersionUpdateTriggers = defineHeadingInfo({
-		"prefix": "🔼",
-		"text": "Update Triggers of Page Version"
-	})
-	const minorUpdateTriggers = defineHeadingInfo({
-		"prefix": "🦐",
-		"text": "Minor Update Triggers"
-	})
-	const majorUpdateTriggers = defineHeadingInfo({
-		"prefix": "🦣",
-		"text": "Major Update Triggers"
-	})
-	const pageTimestampNotes = defineHeadingInfo({
-		"prefix": "📅",
-		"text": "Notes about Timestamps"
-	})
-	const referencingOthers = defineHeadingInfo({
-		"prefix": "👉🏽",
-		"text": "Referencing Others"
-	})
-	const websiteGuidelines = defineHeadingInfo({
-		"prefix": "🕸️",
-		"text": "Guidelines for the Whole Website"
-	})
+const overview = defineHeadingInfo({
+	"prefix": "🌄",
+	"text": "Overview"
+})
+const pageGuidelines = defineHeadingInfo({
+	"prefix": "📃",
+	"text": "Guidelines for Web Pages"
+})
+const pageStatusSet = defineHeadingInfo({
+	"prefix": "🔁",
+	"text": "List of Page Statuses",
+	"id": pageStatusSetID
+})
+const draftStatus = defineHeadingInfo({
+	"prefix": "📄",
+	"text": "Draft",
+	"id": draftStatusID
+})
+const publishedStatus = defineHeadingInfo({
+	"prefix": "📰",
+	"text": "Published",
+	"id": publishedStatusID
+})
+const pageVersionUpdateTriggers = defineHeadingInfo({
+	"prefix": "🔼",
+	"text": "Update Triggers of Page Version"
+})
+const minorUpdateTriggers = defineHeadingInfo({
+	"prefix": "🦐",
+	"text": "Minor Update Triggers"
+})
+const majorUpdateTriggers = defineHeadingInfo({
+	"prefix": "🦣",
+	"text": "Major Update Triggers"
+})
+const pageTimestampNotes = defineHeadingInfo({
+	"prefix": "📅",
+	"text": "Notes about Timestamps"
+})
+const referencingOthers = defineHeadingInfo({
+	"prefix": "👉🏽",
+	"text": "Referencing Others"
+})
+const websiteGuidelines = defineHeadingInfo({
+	"prefix": "🕸️",
+	"text": "Guidelines for the Whole Website"
+})
 
-	const references: ReferenceInfo[] = [
-		{
-			"title": "Specification For HTML Meta Element with Name Value Page-Version -- BrittleBit.org",
-			"itemtype": "https://schema.org/TechArticle",
-			"link": "http://brittlebit.org/specifications/html-meta-page-version/specification-for-html-meta-element-with-name-value-page-version.html",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Nick",
-				"familyName": "Levinson",
-				"link": "http://brittlebit.org/about-the-author-and-contact.html"
-			},
-			"license": {
-				"name": "CC0",
-				"link": "https://creativecommons.org/publicdomain/zero/1.0/"
-			}
+const references: ReferenceInfo[] = [
+	{
+		"title": "Specification For HTML Meta Element with Name Value Page-Version -- BrittleBit.org",
+		"itemtype": "https://schema.org/TechArticle",
+		"link": "http://brittlebit.org/specifications/html-meta-page-version/specification-for-html-meta-element-with-name-value-page-version.html",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Nick",
+			"familyName": "Levinson",
+			"link": "http://brittlebit.org/about-the-author-and-contact.html"
 		},
-		{
-			"title": "Recommended practices for attribution - Creative Commons",
-			"itemtype": "https://schema.org/Article",
-			"link": "https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "CC Wiki",
-				"link": "https://wiki.creativecommons.org/wiki/Main_Page"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://creativecommons.org/licenses/by/4.0/"
-			}
-		},
-		{
-			"title": "Semantic Versioning 2.0.0",
-			"itemtype": "https://schema.org/WebPage",
-			"link": "https://semver.org/spec/v2.0.0.html",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Tom",
-				"familyName": "Preston-Werner",
-				"link": "https://github.com/mojombo/"
-			},
-			"license": {
-				"name": "CC BY 3.0",
-				"link": "https://creativecommons.org/licenses/by/3.0/"
-			}
+		"license": {
+			"name": "CC0",
+			"link": "https://creativecommons.org/publicdomain/zero/1.0/"
 		}
-	]
+	},
+	{
+		"title": "Recommended practices for attribution - Creative Commons",
+		"itemtype": "https://schema.org/Article",
+		"link": "https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "CC Wiki",
+			"link": "https://wiki.creativecommons.org/wiki/Main_Page"
+		},
+		"license": {
+			"name": "CC BY 4.0",
+			"link": "https://creativecommons.org/licenses/by/4.0/"
+		}
+	},
+	{
+		"title": "Semantic Versioning 2.0.0",
+		"itemtype": "https://schema.org/WebPage",
+		"link": "https://semver.org/spec/v2.0.0.html",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Tom",
+			"familyName": "Preston-Werner",
+			"link": "https://github.com/mojombo/"
+		},
+		"license": {
+			"name": "CC BY 3.0",
+			"link": "https://creativecommons.org/licenses/by/3.0/"
+		}
+	}
+]
 </script>
 
 <svelte:head>
@@ -129,8 +129,10 @@
 </svelte:head>
 
 <StructuredArticle itemtype="https://schema.org/Website">
-	<PrimaryHeading slot="title">{pageMeta.title}</PrimaryHeading>
-	<svelte:fragment slot="content">
+	{#snippet title()}
+		<PrimaryHeading>{pageMeta.title}</PrimaryHeading>
+	{/snippet}
+	{#snippet content()}
 		<StructuredSection id={overview.id}>
 			<SecondaryHeading headingInfo={overview}/>
 			<SimpleText itemprop="description">
@@ -196,7 +198,7 @@
 			<StructuredSection id={pageVersionUpdateTriggers.id} >
 				<TertiaryHeading headingInfo={pageVersionUpdateTriggers}/>
 				<SimpleText itemprop="description">
-					 Page version increases depending on the size and influence of the change. Only text contents or properties inside the main structured data will be considered as changes. Changes in the shell and other components (with generalized text) will be ignored. Below is a non-exhaustive list of possible triggers.
+						Page version increases depending on the size and influence of the change. Only text contents or properties inside the main structured data will be considered as changes. Changes in the shell and other components (with generalized text) will be ignored. Below is a non-exhaustive list of possible triggers.
 				</SimpleText>
 				<StructuredSection id={minorUpdateTriggers.id}>
 					<QuaternaryHeading headingInfo={minorUpdateTriggers}/>
@@ -253,6 +255,8 @@
 			</SimpleText>
 		</StructuredSection>
 		<StructuredReference/>
-	</svelte:fragment>
-	<PageDetailCard slot="metadata" {pageMeta}/>
+	{/snippet}
+	{#snippet metadata()}
+		<PageDetailCard {pageMeta}/>
+	{/snippet}
 </StructuredArticle>
