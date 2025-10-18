@@ -1,24 +1,31 @@
 <script lang="ts">
-	import { type ListVariant } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type ListVariant } from "@/types/container_info"
 
-	import SimpleThing from "@/components/general/containers/simple_thing.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import SimpleThing from "@/components/general/containers/simple_thing.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
 
-	export let itemprop = "itemListElement"
-	export let itemtype = "https://schema.org/ListItem"
-	export let variant: ListVariant = "normal"
-	let otherClasses: string[] = []
-
-	$: initialClasses = []
-	export { otherClasses as class }
+let {
+	itemprop = "itemListElement",
+	itemtype = "https://schema.org/ListItem",
+	variant = "normal",
+	class: otherClasses = [],
+	children
+}: {
+	itemprop?: string
+	itemtype?: string
+	variant?: ListVariant
+	class?: string[]
+	children: Snippet
+} = $props()
 </script>
 
 <StructuredListItem
 	{itemprop}
 	{variant}
 	{itemtype}
-	class={[ ...initialClasses, ...otherClasses ] }>
+	class={otherClasses}>
 	<SimpleThing itemprop="description">
-		<slot></slot>
+		{@render children()}
 	</SimpleThing>
 </StructuredListItem>
