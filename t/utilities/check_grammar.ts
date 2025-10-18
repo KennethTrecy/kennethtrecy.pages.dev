@@ -69,8 +69,8 @@ export default async function(
 
 	const BASE_DELAY = 2500
 	const pendingResults: Promise<any>[] = uniqueTexts.map(async text => {
-		// Subtract it by half to allow reducing the final delay
-		const delayMultiplier = Math.random() - 0.5
+		// Divide it further to multiply the delay
+		const delayMultiplier = Math.random()
 		// Base delay has been multiplied by 2 to simulate that it is like 100% when multiplied with
 		// delay multiplier
 		const finalDelay = (BASE_DELAY + (BASE_DELAY * 2 / delayMultiplier)) % 1
