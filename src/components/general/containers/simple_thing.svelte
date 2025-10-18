@@ -1,7 +1,12 @@
 <script lang="ts">
-	export let itemprop: "name"|"description"
+import { type Snippet } from "svelte"
+
+let { itemprop, children }: {
+	itemprop: "name"|"description";
+	children: Snippet
+} = $props()
 </script>
 
 <span itemprop="item" itemscope itemtype="https://schema.org/Thing">
-	<span {itemprop}><slot></slot></span>
+	<span {itemprop}>{@render children()}</span>
 </span>
