@@ -1,259 +1,275 @@
 <script lang="ts">
-	import { type ReferenceInfo } from "@/types/reference"
-	import { type HeadingInfo } from "@/types/container_info"
+import { type ReferenceInfo } from "@/types/reference"
+import { type ExecutedCommandSetInfo, type HeadingInfo } from "@/types/container_info"
 
-	import { authorTypes, internalTypes } from "@/components/general/links/constants"
-	import pageMeta from "@/routes/articles/installation_guide_for_fragmented_web_servers/meta"
+import { authorTypes, internalTypes } from "@/components/general/links/constants"
+import pageMeta from "@/routes/articles/installation_guide_for_fragmented_web_servers/meta"
 
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
-	import BaseLink from "@/components/general/links/base.svelte"
-	import Bookmark from "@/components/general/links/bookmark.svelte"
-	import Citation from "@/components/general/links/citation.svelte"
-	import Keyword from "@/components/general/containers/keyword.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
-	import BodyGroup from "@/components/general/containers/body_group.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import ArticlePost from "@/components/general/containers/article_post.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import SimpleThing from "@/components/general/containers/simple_thing.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import ExampleCodePart from "@/components/general/containers/example_code_part.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
-	import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
+import BaseLink from "@/components/general/links/base.svelte"
+import Bookmark from "@/components/general/links/bookmark.svelte"
+import Citation from "@/components/general/links/citation.svelte"
+import Keyword from "@/components/general/containers/keyword.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
+import BodyGroup from "@/components/general/containers/body_group.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import ArticlePost from "@/components/general/containers/article_post.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import SimpleThing from "@/components/general/containers/simple_thing.svelte"
+import ExampleCommand from "@/components/general/containers/example_command.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import ExampleCodePart from "@/components/general/containers/example_code_part.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
 
-	const problem = defineHeadingInfo({ "text": "Problem" })
-	const prerequisites = defineHeadingInfo({ "text": "Prerequisites" })
-	const stepSections: HeadingInfo<"defined">[] = [
-		{ "text": "HTTP Server Installation" },
-		{ "text": "Scripting Language Installation" },
-		{ "text": "Database Installation" },
-		{ "text": "Website Registration" }
-	].map(defineHeadingInfo)
-	const spaceForImprovements = defineHeadingInfo({ "text": "Space for Improvements" })
+const problem = defineHeadingInfo({ "text": "Problem" })
+const prerequisites = defineHeadingInfo({ "text": "Prerequisites" })
+const stepSections: HeadingInfo<"defined">[] = [
+	{ "text": "HTTP Server Installation" },
+	{ "text": "Scripting Language Installation" },
+	{ "text": "Database Installation" },
+	{ "text": "Website Registration" },
+	{ "text": "Website Deployment" }
+].map(defineHeadingInfo)
+const spaceForImprovements = defineHeadingInfo({ "text": "Space for Improvements" })
 
-	const sampleServerConfiguration = [
-		"# A line starting with `#` is a comment and server would ignore",
-		"# it but useful for documentation to mark or note some things",
-		"",
-		"# Directive below allows listening to all IPv4 addresses bound ",
-		"# to reader's computer",
-		"Listen 0.0.0.0:80",
-		"",
-		"# Reader may see other directives that are configured by default.",
-		"",
-		"# Directives below are modules available. Some of them activated",
-		"# by default.",
-		"LoadModule access_compat_module modules/mod_access_compat.so",
-		"LoadModule rewrite_module modules/mod_rewrite.so",
-		"LoadModule headers_module modules/mod_headers.so",
-		"# ... other available modules may be seen",
-		"",
-		"# There are more directives to be added later.",
-		"# Replace `PHP_ROOT` with real directory according to the",
-		"# installation of the PHP in the machine being configured",
-		"LoadModule php_module \"PHP_ROOT/php8apache2_4.dll\"",
-		"PHPIniDir \"PHP_ROOT/php.ini\"",
-		"AddHandler application/x-httpd-php .php",
-		"# Replace value of `WEBSITE_ROOT` with real directory to serve.",
-		"<VirtualHost *:80>",
-		// eslint-disable-next-line no-tabs
-		"	Define WEBSITE_ROOT \"<path to website root>\"",
-		// eslint-disable-next-line no-tabs, no-template-curly-in-string
-		"	DocumentRoot		\"${WEBSITE_ROOT}\"",
-		// eslint-disable-next-line no-tabs, no-template-curly-in-string
-		"	ErrorLog		\"${WEBSITE_ROOT}/error.log\"",
-		// eslint-disable-next-line no-tabs
-		"",
-		// eslint-disable-next-line no-tabs, no-template-curly-in-string
-		"	<Directory \"${WEBSITE_ROOT}\">",
-		// eslint-disable-next-line no-tabs
-		"		Require			all granted",
-		// eslint-disable-next-line no-tabs
-		"		Options			Indexes Includes FollowSymlinks",
-		// eslint-disable-next-line no-tabs
-		"		AllowOverride	All",
-		// eslint-disable-next-line no-tabs
-		"	</Directory>",
-		"</VirtualHost>",
-	]
-	const beginLineIndexOfServerConfigurationPartA = 0
-	const endLineIndexOfServerConfigurationPartA = 18
-	const beginLineIndexOfServerConfigurationPartB = endLineIndexOfServerConfigurationPartA + 1
-	const endLineIndexOfServerConfigurationPartB = beginLineIndexOfServerConfigurationPartB + 3
-	const beginLineIndexOfServerConfigurationPartC = endLineIndexOfServerConfigurationPartB + 1
-	const endLineIndexOfServerConfigurationPartC = beginLineIndexOfServerConfigurationPartC + 19
+const sampleServerConfiguration = [
+	"# A line starting with `#` is a comment and server would ignore",
+	"# it but useful for documentation to mark or note some things",
+	"",
+	"# Directive below allows listening to all IPv4 addresses bound ",
+	"# to reader's computer",
+	"Listen 0.0.0.0:80",
+	"",
+	"# Reader may see other directives that are configured by default.",
+	"",
+	"# Directives below are modules available. Some of them activated",
+	"# by default.",
+	"LoadModule access_compat_module modules/mod_access_compat.so",
+	"LoadModule rewrite_module modules/mod_rewrite.so",
+	"LoadModule headers_module modules/mod_headers.so",
+	"# ... other available modules may be seen",
+	"",
+	"# There are more directives to be added later.",
+	"# Replace `PHP_ROOT` with real directory according to the",
+	"# installation of the PHP in the machine being configured",
+	"LoadModule php_module \"PHP_ROOT/php8apache2_4.dll\"",
+	"PHPIniDir \"PHP_ROOT/php.ini\"",
+	"AddHandler application/x-httpd-php .php",
+	"# Replace value of `WEBSITE_ROOT` with real directory to serve.",
+	"<VirtualHost *:80>",
+	// eslint-disable-next-line no-tabs
+	"	Define WEBSITE_ROOT \"<path to website root>\"",
+	// eslint-disable-next-line no-tabs, no-template-curly-in-string
+	"	DocumentRoot		\"${WEBSITE_ROOT}\"",
+	// eslint-disable-next-line no-tabs, no-template-curly-in-string
+	"	ErrorLog		\"${WEBSITE_ROOT}/error.log\"",
+	// eslint-disable-next-line no-tabs
+	"",
+	// eslint-disable-next-line no-tabs, no-template-curly-in-string
+	"	<Directory \"${WEBSITE_ROOT}\">",
+	// eslint-disable-next-line no-tabs
+	"		Require			all granted",
+	// eslint-disable-next-line no-tabs
+	"		Options			Indexes Includes FollowSymlinks",
+	// eslint-disable-next-line no-tabs
+	"		AllowOverride	All",
+	// eslint-disable-next-line no-tabs
+	"	</Directory>",
+	"</VirtualHost>",
+]
+const beginLineIndexOfServerConfigurationPartA = 0
+const endLineIndexOfServerConfigurationPartA = 18
+const beginLineIndexOfServerConfigurationPartB = endLineIndexOfServerConfigurationPartA + 1
+const endLineIndexOfServerConfigurationPartB = beginLineIndexOfServerConfigurationPartB + 3
+const beginLineIndexOfServerConfigurationPartC = endLineIndexOfServerConfigurationPartB + 1
+const endLineIndexOfServerConfigurationPartC = beginLineIndexOfServerConfigurationPartC + 19
 
-	const sampleLanguageConfiguration = [
-		"; For this file, a line starting with `;` is a comment and",
-		"; server would ignoreit but useful for documentation to mark",
-		"; or note some things.",
-		"",
-		"; Reader may see other configurations that exist by default.",
-		"",
-		"; Assuming that this configuration is around line 900+...",
-		"; Notice that some extensions are enabled by default. Some are",
-		"; disabled. It would be best to double check the extensions.",
-		"",
-		"; In this sample configuration, developers may use a MySQL",
-		"; database, PostgreSQL database, and/or SQLite database.",
-		"extension=mysqli",
-		";extension=oci8_12c",
-		";extension=oci8_19",
-		";extension=odbc",
-		";extension=openssl",
-		";extension=pdo_firebird",
-		"extension=pdo_mysql",
-		";extension=pdo_oci",
-		";extension=pdo_odbc",
-		"extension=pdo_pgsql",
-		"extension=pdo_sqlite",
-		"extension=pgsql",
-		";extension=shmop",
-		""
-	]
+const sampleLanguageConfiguration = [
+	"; For this file, a line starting with `;` is a comment and",
+	"; server would ignoreit but useful for documentation to mark",
+	"; or note some things.",
+	"",
+	"; Reader may see other configurations that exist by default.",
+	"",
+	"; Assuming that this configuration is around line 900+...",
+	"; Notice that some extensions are enabled by default. Some are",
+	"; disabled. It would be best to double check the extensions.",
+	"",
+	"; In this sample configuration, developers may use a MySQL",
+	"; database, PostgreSQL database, and/or SQLite database.",
+	"extension=mysqli",
+	";extension=oci8_12c",
+	";extension=oci8_19",
+	";extension=odbc",
+	";extension=openssl",
+	";extension=pdo_firebird",
+	"extension=pdo_mysql",
+	";extension=pdo_oci",
+	";extension=pdo_odbc",
+	"extension=pdo_pgsql",
+	"extension=pdo_sqlite",
+	"extension=pgsql",
+	";extension=shmop",
+	""
+]
 
-	const references: ReferenceInfo[] = [
+const executedServerInfo: ExecutedCommandSetInfo = {
+	"description": "Example commands to run the HTTP server.",
+	"commands": [
 		{
-			"title": "XAMPP",
-			"link": "https://www.apachefriends.org/download.html",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Apache Friends",
-				"link": "https://www.apachefriends.org/about.html"
-			},
-			"license": {
-				"name": "GPL 3.0",
-				"link": "https://www.gnu.org/licenses/gpl-3.0.html"
-			}
+			"command": "httpd",
+			"output": []
 		},
 		{
-			"title": "Apache Haus Downloads",
-			"link": "https://www.apachehaus.com/cgi-bin/download.plx",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Apache Haus",
-				"link": "https://www.apachehaus.com/"
-			}
-		},
-		{
-			"title": "mod_access_compat - Apache HTTP Server Version 2.4",
-			"link": "https://httpd.apache.org/docs/2.4/mod/mod_access_compat.html",
-			"itemtype": "https://schema.org/TechArticle",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Apache Software Foundation",
-				"link": "https://www.apache.org/foundation/"
-			},
-			"license": {
-				"name": "Apache License, Version 2.0",
-				"link": "https://httpd.apache.org/docs/2.4/license.html"
-			}
-		},
-		{
-			"title": "mod_rewrite - Apache HTTP Server Version 2.4",
-			"link": "https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html",
-			"itemtype": "https://schema.org/TechArticle",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Apache Software Foundation",
-				"link": "https://www.apache.org/foundation/"
-			},
-			"license": {
-				"name": "Apache License, Version 2.0",
-				"link": "https://httpd.apache.org/docs/2.4/license.html"
-			}
-		},
-		{
-			"title": "mod_headers - Apache HTTP Server Version 2.4",
-			"link": "https://httpd.apache.org/docs/2.4/mod/mod_headers.html",
-			"itemtype": "https://schema.org/TechArticle",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Apache Software Foundation",
-				"link": "https://www.apache.org/foundation/"
-			},
-			"license": {
-				"name": "Apache License, Version 2.0",
-				"link": "https://httpd.apache.org/docs/2.4/license.html"
-			}
-		},
-		{
-			"title": "PHP: What can PHP do? - Manual",
-			"link": "https://www.php.net/manual/en/intro-whatcando.php",
-			"itemtype": "https://schema.org/Article",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "PHP Documentation Group",
-				"link": "https://www.php.net/manual/en/preface.php#contributors"
-			},
-			"license": {
-				"name": "CC BY 3.0",
-				"link": "https://www.php.net/manual/en/cc.license.php"
-			}
-		},
-		{
-			"title": "PHP For Windows: Binaries and sources Releases",
-			"link": "https://windows.php.net/download/",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The PHP Group",
-				"link": "https://www.php.net/credits.php"
-			}
-		},
-		{
-			"title": "MySQL :: Download MySQL Community Server",
-			"link": "https://dev.mysql.com/downloads/mysql/",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Oracle and/or its affiliates",
-				"link": "https://www.oracle.com/"
-			}
-		},
-		{
-			"title": "MySQL :: Download MySQL Workbench",
-			"link": "https://dev.mysql.com/downloads/workbench/",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Oracle and/or its affiliates",
-				"link": "https://www.oracle.com/"
-			}
-		},
-		{
-			"title": "PostgreSQL",
-			"link": "https://www.postgresql.org/download/windows/",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The PostgreSQL Global Development Group",
-				"link": "https://www.postgresql.org/about/"
-			},
-			"license": {
-				"name": "PostgreSQL License",
-				"link": "https://www.postgresql.org/about/licence/"
-			}
-		},
-		{
-			"title": "pgAdmin",
-			"link": "https://www.pgadmin.org/download/",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The pgAdmin Development Team",
-				"link": "https://www.pgadmin.org/development/"
-			},
-			"license": {
-				"name": "PostgreSQL License",
-				"link": "https://www.pgadmin.org/licence/"
-			}
+			"command": "httpd -f custom_httpd.conf",
+			"output": []
 		}
 	]
+}
+
+const references: ReferenceInfo[] = [
+	{
+		"title": "XAMPP",
+		"link": "https://www.apachefriends.org/download.html",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Apache Friends",
+			"link": "https://www.apachefriends.org/about.html"
+		},
+		"license": {
+			"name": "GPL 3.0",
+			"link": "https://www.gnu.org/licenses/gpl-3.0.html"
+		}
+	},
+	{
+		"title": "Download VS17 Apache 2.4 Server and Modules",
+		"link": "https://www.apachelounge.com/download/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Apache Lounge",
+			"link": "https://www.apachelounge.com/"
+		}
+	},
+	{
+		"title": "mod_access_compat - Apache HTTP Server Version 2.4",
+		"link": "https://httpd.apache.org/docs/2.4/mod/mod_access_compat.html",
+		"itemtype": "https://schema.org/TechArticle",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The Apache Software Foundation",
+			"link": "https://www.apache.org/foundation/"
+		},
+		"license": {
+			"name": "Apache License, Version 2.0",
+			"link": "https://httpd.apache.org/docs/2.4/license.html"
+		}
+	},
+	{
+		"title": "mod_rewrite - Apache HTTP Server Version 2.4",
+		"link": "https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html",
+		"itemtype": "https://schema.org/TechArticle",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The Apache Software Foundation",
+			"link": "https://www.apache.org/foundation/"
+		},
+		"license": {
+			"name": "Apache License, Version 2.0",
+			"link": "https://httpd.apache.org/docs/2.4/license.html"
+		}
+	},
+	{
+		"title": "mod_headers - Apache HTTP Server Version 2.4",
+		"link": "https://httpd.apache.org/docs/2.4/mod/mod_headers.html",
+		"itemtype": "https://schema.org/TechArticle",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The Apache Software Foundation",
+			"link": "https://www.apache.org/foundation/"
+		},
+		"license": {
+			"name": "Apache License, Version 2.0",
+			"link": "https://httpd.apache.org/docs/2.4/license.html"
+		}
+	},
+	{
+		"title": "PHP: What can PHP do? - Manual",
+		"link": "https://www.php.net/manual/en/intro-whatcando.php",
+		"itemtype": "https://schema.org/Article",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "PHP Documentation Group",
+			"link": "https://www.php.net/manual/en/preface.php#contributors"
+		},
+		"license": {
+			"name": "CC BY 3.0",
+			"link": "https://www.php.net/manual/en/cc.license.php"
+		}
+	},
+	{
+		"title": "PHP For Windows: Binaries and sources Releases",
+		"link": "https://windows.php.net/download/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The PHP Group",
+			"link": "https://www.php.net/credits.php"
+		}
+	},
+	{
+		"title": "MySQL :: Download MySQL Community Server",
+		"link": "https://dev.mysql.com/downloads/mysql/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Oracle and/or its affiliates",
+			"link": "https://www.oracle.com/"
+		}
+	},
+	{
+		"title": "MySQL :: Download MySQL Workbench",
+		"link": "https://dev.mysql.com/downloads/workbench/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Oracle and/or its affiliates",
+			"link": "https://www.oracle.com/"
+		}
+	},
+	{
+		"title": "PostgreSQL",
+		"link": "https://www.postgresql.org/download/windows/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The PostgreSQL Global Development Group",
+			"link": "https://www.postgresql.org/about/"
+		},
+		"license": {
+			"name": "PostgreSQL License",
+			"link": "https://www.postgresql.org/about/licence/"
+		}
+	},
+	{
+		"title": "pgAdmin",
+		"link": "https://www.pgadmin.org/download/",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The pgAdmin Development Team",
+			"link": "https://www.pgadmin.org/development/"
+		},
+		"license": {
+			"name": "PostgreSQL License",
+			"link": "https://www.pgadmin.org/licence/"
+		}
+	}
+]
 </script>
 
 <ArticlePost {pageMeta}>
@@ -307,7 +323,7 @@
 			</SimpleText>
 			<StructuredList order="ascending">
 				<DescriptiveListItem>
-					Download the <Citation info={references[1]}>portable package (in zipped format) of Apache HTTP server</Citation> from <ExternalLink address="https://www.apachehaus.com/cgi-bin/download.plx">Apache Haus</ExternalLink>.
+					Download the <Citation info={references[1]}>portable package (in zipped format) of Apache HTTP server</Citation> from <ExternalLink address="https://www.apachelounge.com/">Apache Lounge</ExternalLink>.
 				</DescriptiveListItem>
 				<DescriptiveListItem>
 					Unzip Apache HTTP server to your chosen directory. Label the chosen directory as <var>APACHE_ROOT</var>.
@@ -421,6 +437,28 @@
 				rawCodeLines={sampleServerConfiguration}
 				beginLineIndex={beginLineIndexOfServerConfigurationPartC}
 				endLineIndex={endLineIndexOfServerConfigurationPartC}/>
+		</StructuredSection>
+		<StructuredSection id={stepSections[4].id}>
+			<SecondaryHeading headingInfo={stepSections[4]}/>
+			<SimpleText>
+				Finally, the server is ready to host the website.
+			</SimpleText>
+			<SimpleText itemprop="description">
+				In this section, the reader would execute a command to run the website.
+			</SimpleText>
+			<StructuredList order="ascending">
+				<DescriptiveListItem>
+					After the step 5 in registering the website to the server, open a terminal and set the location to <em><var>APACHE_ROOT</var></em>
+				</DescriptiveListItem>
+				<DescriptiveListItem>
+					Inside the terminal, execute the command: <code>httpd</code>. If the <em><var>APACHE_ROOT</var>/conf/httpd&period;conf</em> is on another path or want to use a customized configuration file, execute the command: <code>httpd -f &lt;path to configuration file&gt;</code>.
+				</DescriptiveListItem>
+				<DescriptiveListItem>
+					Visit the URL <code>http://localhost</code> on the browser.
+				</DescriptiveListItem>
+			</StructuredList>
+			<ExampleCommand
+				commandInfos={executedServerInfo}/>
 		</StructuredSection>
 		<StructuredSection id={spaceForImprovements.id}>
 			<SecondaryHeading headingInfo={spaceForImprovements}/>
