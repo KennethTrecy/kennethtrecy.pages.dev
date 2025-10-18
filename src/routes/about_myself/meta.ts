@@ -3,12 +3,12 @@ import definePageMeta from "@/utilities/definers/define_page_meta"
 
 const meta = definePageMeta("/about_myself", {
 	"datePublished": FIRST_PUBLICATION_DATE,
-	"dateModified": new Date(Date.UTC(2025, 9, 20, 4, 0)),
+	"dateModified": new Date(Date.UTC(2025, 9, 18, 6, 30)),
 	// eslint-disable-next-line max-len
 	"description": "Know more about Kenneth Trecy's journey and his skills on I.T. field. Contact details have been listed here too if you want to connect with him.",
 	"keywords": [ "Kenneth Trecy", "contact", "journey", "skills", "Filipino programmer" ],
 	"title": "Who am I?: Journey of Trecy",
-	"version": "1.004-dev"
+	"version": "1.004"
 })
 
 export default meta

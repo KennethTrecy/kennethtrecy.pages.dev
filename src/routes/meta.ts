@@ -5,7 +5,7 @@ import definePageMeta from "@/utilities/definers/define_page_meta"
 
 const meta = definePageMeta("/", {
 	"datePublished": FIRST_PUBLICATION_DATE,
-	"dateModified": new Date(Date.UTC(2025, 9, 20, 3, 10)),
+	"dateModified": new Date(Date.UTC(2025, 9, 18, 6, 30)),
 	// eslint-disable-next-line max-len
 	"description": "Do you need help in back-end web development? Hi! I am Kenneth Trecy, a programmer living in the Philippines. Get to know me by visiting out my personal website!",
 	"keywords": [
@@ -16,7 +16,7 @@ const meta = definePageMeta("/", {
 		"back-end programmer"
 	],
 	"title": "Kenneth Trecy's Portfolio",
-	"version": "1.003-dev",
+	"version": "1.003",
 	"image": profile
 })
 

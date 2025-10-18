@@ -2,6 +2,7 @@ import defineArticlePageMeta from "@/utilities/definers/define_article_page_meta
 
 const meta = defineArticlePageMeta("/articles/installation_guide_for_fragmented_web_servers", {
 	"datePublished": new Date(Date.UTC(2023, 10, 5, 14, 0)),
+	"dateModified": new Date(Date.UTC(2025, 9, 18, 6, 30)),
 	"description": "Guide to install Apache HTTP server, PHP, MySQL, and others separately for your development environment.",
 	"keywords": [
 		"instruction",
@@ -11,7 +12,7 @@ const meta = defineArticlePageMeta("/articles/installation_guide_for_fragmented_
 		"developer"
 	],
 	"title": "Installation Guide for Fragmented Web Servers",
-	"version": "1.001-dev",
+	"version": "1.001",
 	"objectType": "article",
 	"articleType": "technical article"
 })
