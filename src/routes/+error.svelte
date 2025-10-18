@@ -54,7 +54,7 @@ const pageMeta = $derived(definePageMeta(page.url.pathname, {
 
 <StructuredArticle>
 	{#snippet title()}
-		<PrimaryHeading >{page.status} | {page.error?.message}</PrimaryHeading>
+		<PrimaryHeading>{page.status} | {page.error?.message}</PrimaryHeading>
 	{/snippet}
 	{#snippet content()}
 		<p >
