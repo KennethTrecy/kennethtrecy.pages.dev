@@ -2,7 +2,7 @@
 /* eslint-disable max-lines-per-function */
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render } from "@testing-library/svelte"
+import { cleanup, fireEvent, render } from "@testing-library/svelte/svelte5"
 import { describe, expect, it } from "vitest"
 
 import defineHeadingInfo from "@/utilities/definers/define_heading_info"
@@ -15,7 +15,7 @@ describe("Tertiary heading behavior", () => {
 			"prefix": "I. ",
 			"text": "hello a"
 		})
-		const { container } = render(Component, { headingInfo })
+		const { container } = render(Component, { headingInfo, "children": () => "" })
 
 		const property = container.querySelector("[itemprop~=headline][itemprop~=name]")
 		const spans = container.querySelectorAll("h3 span")
@@ -32,7 +32,7 @@ describe("Tertiary heading behavior", () => {
 		const headingInfo = defineHeadingInfo({
 			"text": "hello b"
 		})
-		const { container } = render(Component, { headingInfo })
+		const { container } = render(Component, { headingInfo, "children": () => "" })
 
 		const spans = container.querySelectorAll("h3 span")
 
@@ -45,12 +45,12 @@ describe("Tertiary heading behavior", () => {
 		const headingInfo = defineHeadingInfo({
 			"text": "hello c"
 		})
-		const { container } = render(Component, { headingInfo })
+		const { container } = render(Component, { headingInfo, "children": () => "" })
 
 		const heading = container.querySelector("h3") as HTMLHeadingElement
 		await fireEvent.mouseOver(heading)
 
-		const bookmark = container.querySelector(".hidden")
+		const bookmark = container.querySelector(".opacity-0")
 		expect(bookmark).toBeNull()
 
 		cleanup()
@@ -60,13 +60,13 @@ describe("Tertiary heading behavior", () => {
 		const headingInfo = defineHeadingInfo({
 			"text": "hello d"
 		})
-		const { container } = render(Component, { headingInfo })
+		const { container } = render(Component, { headingInfo, "children": () => "" })
 
 		const heading = container.querySelector("h3") as HTMLHeadingElement
 		await fireEvent.mouseOver(heading)
 		await fireEvent.mouseOut(heading)
 
-		const bookmark = container.querySelector(".hidden")
+		const bookmark = container.querySelector(".opacity-0")
 		expect(bookmark).not.toBeNull()
 
 		cleanup()
@@ -79,7 +79,8 @@ describe("Tertiary heading behavior", () => {
 		const variant = "raw"
 		const { container } = render(Component, {
 			headingInfo,
-			variant
+			variant,
+			"children": () => ""
 		})
 
 		const property = container.querySelector("[itemprop~=headline][itemprop~=name]")
@@ -98,7 +99,8 @@ describe("Tertiary heading behavior", () => {
 		const variant = "name"
 		const { container } = render(Component, {
 			headingInfo,
-			variant
+			variant,
+			"children": () => ""
 		})
 
 		const missingProperty = container.querySelector("[itemprop~=headline][itemprop~=name]")
