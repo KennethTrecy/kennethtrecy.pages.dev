@@ -1,3 +1,236 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss" source(none);
+@source "../../src/*.{html,js,css}";
+@source "../../src/components/*.{html,js,svelte}";
+@source "../../src/routes/*.{html,js,svelte}";
+@source "../../.svelte-kit/output/*.{html,js,css}";
+@plugin "daisyui" {
+	themes: corporate --default, night --prefersdark;
+}
+@plugin "@tailwindcss/typography";
+@config "../../tailwindcss.config.ts";
+
+html {
+	scroll-behavior: smooth;
+	transition: background-color 0.5s ease-in, color 0.5s ease-in;
+}
+
+html {
+	--bg-fill: var(--root-bg, var(--color-base-100));
+
+	--bg-normal-size: 1px;
+	--bg-translucent-size: 3px;
+	background-image:
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size)),
+		radial-gradient(var(--color-primary) var(--bg-normal-size), #0000 var(--bg-translucent-size));
+	background-size: 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px, 240px 240px;
+	background-position:
+		60px 60px, /* 3. top left C */
+		120px 40px, /* 4. top left D */
+		120px 80px, /* center A */
+		60px 120px, /* center D */
+		0px 40px, /* 2. top left B */
+		0px 80px, /* 1. top left A */
+
+		180px 120px, /* center B */
+		240px 160px, /* 8. bottom right A */
+		180px 180px, /* 9. bottom right B */
+		180px 240px, /* 10. bottom right C */
+		120px 160px, /* center C */
+		120px 200px, /* 11. bottom right D */
+
+		180px 0px, /* 5. top right A */
+		240px 40px, /* 6. top right B */
+		240px 80px, /* 7. top right C */
+
+		60px 240px, /* 12. bottom left A */
+		0px 160px, /* 14. bottom left C */
+		0px 200px /* 13. bottom left B */
+		;
+
+	animation-name: moving_background;
+	animation-duration: 10s;
+	animation-timing-function: linear;
+	animation-direction: normal;
+	animation-iteration-count: infinite;
+}
+
+@keyframes moving_background {
+	0%, 5% { /* Start point top */
+		background-position:
+			60px 60px, /* 3. top left C */
+			120px 40px, /* 4. top left D */
+			120px 80px, /* center A */
+			60px 120px, /* center D */
+			0px 40px, /* 2. top left B */
+			0px 80px, /* 1. top left A */
+
+			180px 120px, /* center B */
+			240px 160px, /* 8. bottom right A */
+			180px 180px, /* 9. bottom right B */
+			180px 240px, /* 10. bottom right C */
+			120px 160px, /* center C */
+			120px 200px, /* 11. bottom right D */
+
+			180px 0px, /* 5. top right A */
+			240px 40px, /* 6. top right B */
+			240px 80px, /* 7. top right C */
+
+			60px 240px, /* 12. bottom left A */
+			0px 160px, /* 14. bottom left C */
+			0px 200px /* 13. bottom left B */
+			;
+	}
+
+	25% { /* Transition to flat top */
+		background-position:
+			30px 0px, /* 2. top left B */
+			90px 0px, /* 3. top left C */
+			90px 120px, /* center C */
+			120px 180px, /* center B */
+			0px 60px, /* 1. top left A */
+			30px 120px, /* 14. bottom left C */
+
+			120px 60px, /* center D */
+			210px 120px, /* 7. top right C */
+			240px 180px, /* 8. bottom right A */
+			210px 240px, /* 9. bottom right B */
+			150px 120px, /* center A */
+			150px 240px, /* 10. bottom right C */
+
+			150px 0px, /* 4. top left D */
+			210px 0px, /* 5. top right A */
+			180px 60px, /* 6. top right B */
+
+			90px 240px, /* 11. bottom right D */
+			60px 180px, /* 13. bottom left B */
+			30px 240px /* 12. bottom left A */
+			;
+	}
+
+	50% { /* Spin center of flat top */
+		background-position:
+			30px 0px, /* 2. top left B */
+			90px 0px, /* 3. top left C */
+			120px 180px, /* center B */
+			150px 120px, /* center A */
+			0px 60px, /* 1. top left A */
+			30px 120px, /* 14. bottom left C */
+
+			90px 120px, /* center C */
+			210px 120px, /* 7. top right C */
+			240px 180px, /* 8. bottom right A */
+			210px 240px, /* 9. bottom right B */
+			120px 60px, /* center D */
+			150px 240px, /* 10. bottom right C */
+
+			150px 0px, /* 4. top left D */
+			210px 0px, /* 5. top right A */
+			180px 60px, /* 6. top right B */
+
+			90px 240px, /* 11. bottom right D */
+			60px 180px, /* 13. bottom left B */
+			30px 240px /* 12. bottom left A */
+			;
+	}
+
+	75% { /* Transition to pointy top */
+		background-position:
+			0px 40px, /* 2. top left B */
+			60px 60px, /* 3. top left C */
+			180px 120px, /* center B */
+			120px 80px, /* center A */
+			0px 80px, /* 1. top left A */
+			0px 160px, /* 14. bottom left C */
+
+			120px 160px, /* center C */
+			240px 80px, /* 7. top right C */
+			240px 160px, /* 8. bottom right A */
+			180px 180px, /* 9. bottom right B */
+			60px 120px, /* center D */
+			180px 240px, /* 10. bottom right C */
+
+			120px 40px, /* 4. top left D */
+			180px 0px, /* 5. top right A */
+			240px 40px, /* 6. top right B */
+
+			120px 200px, /* 11. bottom right D */
+			0px 200px, /* 13. bottom left B */
+			60px 240px /* 12. bottom left A */
+			;
+	}
+
+	95%, 100% {
+		background-position:
+			0px 40px, /* 2. top left B */
+			60px 60px, /* 3. top left C */
+			120px 80px, /* center A */
+			60px 120px, /* center D */
+			0px 80px, /* 1. top left A */
+			0px 160px, /* 14. bottom left C */
+
+			180px 120px, /* center B */
+			240px 80px, /* 7. top right C */
+			240px 160px, /* 8. bottom right A */
+			180px 180px, /* 9. bottom right B */
+			120px 160px, /* center C */
+			180px 240px, /* 10. bottom right C */
+
+			120px 40px, /* 4. top left D */
+			180px 0px, /* 5. top right A */
+			240px 40px, /* 6. top right B */
+
+			120px 200px, /* 11. bottom right D */
+			0px 200px, /* 13. bottom left B */
+			60px 240px /* 12. bottom left A */
+			;
+	}
+}
+
+article > h1:first-child > span,
+section[id] > h2 > span,
+section[id] section > h3 > span,
+section[id] a,
+section[id] p,
+section[id] span[itemscope] {
+	background-color: var(--bg-fill);
+	transition: background-color 0.5s ease-in, color 0.5s ease-in;
+}
+
+section[id] .card-body h3:first-child > span,
+section[id] .card-body a,
+section[id] .card-body p {
+	background-color: transparent;
+}
+
+@layer utilities {
+	.prose {
+		& :where(
+			ul.project_list,
+			ol.card_list,
+			li.project_list,
+			li.card_list,
+			p:last-child
+		):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+			@apply m-0 p-0;
+		}
+	}
+}
