@@ -1,40 +1,51 @@
 <script lang="ts">
-	import Icon from "@/components/general/icon.svelte"
-	import Bookmark from "@/components/general/links/bookmark.svelte"
+import { type Snippet } from "svelte"
+import Icon from "@/components/general/icon.svelte"
+import Bookmark from "@/components/general/links/bookmark.svelte"
 
-	export let level: number
-	export let fragment: string
-	export let mayUseBookmark = true
-	let otherClasses: string[] = []
+let {
+	level,
+	fragment,
+	mayUseBookmark = true,
+	class: otherClasses = [],
+	children
+}: {
+	level: number
+	fragment: string
+	mayUseBookmark?: boolean
+	class?: string[]
+	children: Snippet
+} = $props()
 
-	export { otherClasses as class }
+let isMouseIn = $state(false)
 
-	let isMouseIn = false
-
-	$: joinedClasses = [
-		...otherClasses
-	].filter(Boolean).join(" ") || undefined
-	$: tag = level == 1
+let joinedClasses = $derived([
+	"heading-bg",
+	...otherClasses
+].filter(Boolean).join(" ") || undefined)
+let tag = $derived(
+	level == 1
 		? "h1"
 		: level === 2
 			? "h2"
 			: level === 3
 				? "h3"
 				: "h4"
+)
 </script>
 
 <svelte:element
 	this={tag}
 	class={joinedClasses}
-	on:mouseout={_event => isMouseIn = false}
-	on:blur={_event => isMouseIn = false}
-	on:mouseover={_event => isMouseIn = true}
-	on:focus={_event => isMouseIn = true}>
-	<slot></slot>
+	onmouseout={_event => isMouseIn = false}
+	onblur={_event => isMouseIn = false}
+	onmouseover={_event => isMouseIn = true}
+	onfocus={_event => isMouseIn = true}>
+	{@render children()}
 	{#if mayUseBookmark}
 		<Bookmark
 			{fragment}
-			class={[ isMouseIn ? "" : "hidden" ]}>
+			class={[ isMouseIn ? "opacity-100 transition-opacity" : "opacity-0 transition-opacity" ]}>
 			<Icon name="link"/>
 		</Bookmark>
 	{/if}
