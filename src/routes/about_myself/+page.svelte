@@ -234,7 +234,7 @@ const technologies: TechnologyArea[] = [
 
 <StructuredArticle itemtype="https://schema.org/Person">
 	{#snippet title()}
-		<PrimaryHeading >{pageMeta.title}</PrimaryHeading>
+		<PrimaryHeading>{pageMeta.title}</PrimaryHeading>
 	{/snippet}
 	{#snippet content()}
 		<section id={journey.id}>
