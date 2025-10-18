@@ -1,23 +1,38 @@
 <script lang="ts">
-	import { PUBLIC_PRODUCTION_BASE_URL } from "$env/static/public"
+import { type Snippet } from "svelte"
+import { PUBLIC_PRODUCTION_BASE_URL } from "$env/static/public"
 
-	import { internalTypes } from "@/components/general/links/constants"
+import { internalTypes } from "@/components/general/links/constants"
 
-	import BaseLink from "@/components/general/links/base.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
+import BaseLink from "@/components/general/links/base.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
 
-	export let address: string
-	export let itemprop: string|undefined
-	export let itemtype: string|undefined
+let {
+	address,
+	itemprop,
+	itemtype,
+	children
+}: {
+	address: string
+	itemprop?: string
+	itemtype?: string
+	children: Snippet
+} = $props()
 
-	$: isInbound = address.includes(PUBLIC_PRODUCTION_BASE_URL)
-	$: linkComponent = isInbound ? BaseLink : ExternalLink
-	$: relationship = isInbound ? internalTypes : []
+let isInbound = $derived(address.includes(PUBLIC_PRODUCTION_BASE_URL))
+let relationship = $derived(isInbound ? internalTypes : [])
 </script>
 
-<svelte:component
-	this={linkComponent}
+{#if isInbound}
+<BaseLink
 	{address}
 	{itemprop}
 	{itemtype}
-	{relationship}><slot></slot></svelte:component>
+	{relationship}>{@render children()}</BaseLink>
+{:else}
+<ExternalLink
+	{address}
+	{itemprop}
+	{itemtype}
+	{relationship}>{@render children()}</ExternalLink>
+{/if}
