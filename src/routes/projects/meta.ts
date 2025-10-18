@@ -9,7 +9,7 @@ const meta = definePageMeta("/projects", {
 	"description": "Kenneth Trecy has a decade of experience in programming websites. Here is an overview of different projects he was involved.",
 	"keywords": [ "Kenneth Trecy", "involved", "personal", "projects" ],
 	"title": "List of Involved Projects",
-	"version": "1.002"
+	"version": "1.003-dev"
 })
 
 export default meta
