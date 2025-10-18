@@ -1,38 +1,41 @@
 <script lang="ts">
-	import { type PageMeta } from "@/types/content_metadata"
-	import { internalTypes } from "@/components/general/links/constants"
-	import { PUBLIC_PRODUCTION_BASE_URL } from "$env/static/public"
+import { type PageMeta } from "@/types/content_metadata"
+import { internalTypes } from "@/components/general/links/constants"
+import { PUBLIC_PRODUCTION_BASE_URL } from "$env/static/public"
 
-	import Icon from "@/components/general/icon.svelte"
-	import Link from "@/components/general/links/base.svelte"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
-	import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
-	export let articleMeta: PageMeta
+import Icon from "@/components/general/icon.svelte"
+import Link from "@/components/general/links/base.svelte"
+import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
 
-	$: title = defineHeadingInfo({
-		"text": articleMeta.title
-	})
-	$: canonicalURL = `${PUBLIC_PRODUCTION_BASE_URL}${articleMeta.path}`
+let { articleMeta }: {
+	articleMeta: PageMeta
+} = $props()
 
-	const dateTimeFormatOptions: Partial<Intl.DateTimeFormatOptions> = {
-		"year": "numeric",
-		"month": "long",
-		"day": "numeric",
-		"hour": "numeric",
-		"minute": "numeric",
-		"timeZoneName": "short",
-		"timeZone": "UTC"
-	}
+let title = $derived(defineHeadingInfo({
+	"text": articleMeta.title
+}))
+let canonicalURL = $derived(`${PUBLIC_PRODUCTION_BASE_URL}${articleMeta.path}`)
 
-	$: dateTimePublished = articleMeta.datePublished.toISOString()
-	$: humanReadableDatePublished = articleMeta.datePublished.toLocaleString(
-		"en",
-		dateTimeFormatOptions
-	)
-	$: dateTimeModified = articleMeta.dateModified.toISOString()
-	$: hasModified = dateTimePublished !== dateTimeModified
+const dateTimeFormatOptions: Partial<Intl.DateTimeFormatOptions> = {
+	"year": "numeric",
+	"month": "long",
+	"day": "numeric",
+	"hour": "numeric",
+	"minute": "numeric",
+	"timeZoneName": "short",
+	"timeZone": "UTC"
+}
+
+let dateTimePublished = $derived(articleMeta.datePublished.toISOString())
+let humanReadableDatePublished = $derived(articleMeta.datePublished.toLocaleString(
+	"en",
+	dateTimeFormatOptions
+))
+let dateTimeModified = $derived(articleMeta.dateModified.toISOString())
+let hasModified = $derived(dateTimePublished !== dateTimeModified)
 </script>
 
 <div
@@ -46,7 +49,7 @@
 			{articleMeta.description}
 		</p>
 		<div class="card-actions flex md:flex-row items-center">
-			<p class="prose text-sm flex-1">
+			<p class="prose prose-neutral text-sm flex-1">
 				{#if hasModified}
 						Published last <time
 							itemprop="datePublished"
