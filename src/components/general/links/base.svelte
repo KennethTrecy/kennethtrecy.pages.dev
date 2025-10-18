@@ -1,36 +1,47 @@
 <script lang="ts">
-	import { type AnchorLinkType, type AnchorTarget } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type AnchorLinkType, type AnchorTarget } from "@/types/container_info"
 
-	export let address: string
-	export let relationship: AnchorLinkType|AnchorLinkType[]
+let {
+	address,
+	relationship,
+	context = "self",
+	mayIndicateExternal = true,
+	title = undefined,
+	itemprop = undefined,
+	itemtype = undefined,
+	class: otherClasses = [],
+	children
+}: {
+	address: string
+	relationship: AnchorLinkType|AnchorLinkType[]
+	context?: AnchorTarget
+	mayIndicateExternal?: boolean
+	title?: string|undefined
+	itemprop?: string|undefined
+	itemtype?: string|undefined
+	class?: string[]
+	children: Snippet
+} = $props()
 
-	export let context: AnchorTarget = "self"
-	export let mayIndicateExternal = true
-	export let title: string|undefined = undefined
-	export let itemprop: string|undefined = undefined
-	export let itemtype: string|undefined = undefined
-	let otherClasses: string[] = []
+let relationshipTypes = $derived(Array.isArray(relationship) ? relationship.sort().join(" ") : relationship)
+let target = $derived(context === "self" ? "_self" : "_blank")
+let hasExternal = $derived(Array.isArray(relationship)
+	? relationship.indexOf("external") > -1
+	: relationship === "external")
+let mayShowExternalIcon = $derived(hasExternal && mayIndicateExternal)
+let joinedClasses = $derived([
+	"link",
+	...otherClasses
+].filter(Boolean).join(" "))
+let itemscope = $derived(typeof itemtype === "undefined" ? undefined : true)
+let label = $derived(`Link to ${address}`)
 
-	export { otherClasses as class }
-
-	$: relationshipTypes = Array.isArray(relationship) ? relationship.sort().join(" ") : relationship
-	$: target = context === "self" ? "_self" : "_blank"
-	$: hasExternal = Array.isArray(relationship)
-		? relationship.indexOf("external") > -1
-		: relationship === "external"
-	$: mayShowExternalIcon = hasExternal && mayIndicateExternal
-	$: joinedClasses = [
-		"link",
-		...otherClasses
-	].filter(Boolean).join(" ")
-	$: itemscope = typeof itemtype === "undefined" ? undefined : true
-	$: label = `Link to ${address}`
-
-	function visitLink(event: KeyboardEvent): void {
-		if (event.key === "Enter") {
-			location.href = address
-		}
+function visitLink(event: KeyboardEvent): void {
+	if (event.key === "Enter") {
+		location.href = address
 	}
+}
 </script>
 
 <a
@@ -42,16 +53,18 @@
 	{target}
 	{itemscope}
 	{itemtype}>
-	<slot></slot></a>{#if mayShowExternalIcon}<span
+	{@render children()}</a>{#if mayShowExternalIcon}<span
 	class="cursor-pointer"
 	role="link"
 	tabindex="0"
 	aria-label={label}
-	on:keyup={visitLink}></span>{/if}
+	onkeyup={visitLink}></span>{/if}
 
 <style lang="postcss">
-	span::after {
-		font-family: "Material Symbols Outlined";
-		content: "north_east";
-	}
+span::after {
+	font-family: "Material Symbols Outlined";
+	content: "north_east";
+	position: relative;
+	display: inline;
+}
 </style>
