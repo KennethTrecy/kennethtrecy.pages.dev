@@ -1,9 +1,16 @@
 <script lang="ts">
-	import { type ExecutedCommandSetInfo } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type ExecutedCommandSetInfo } from "@/types/container_info"
 
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
 
-	export let commandInfos: ExecutedCommandSetInfo
+let {
+	commandInfos,
+	caption
+}: {
+	commandInfos: ExecutedCommandSetInfo
+	caption?: Snippet
+} = $props()
 </script>
 
 <div itemprop="hasPart" itemscope itemtype="https://schema.org/CreativeWork">
@@ -18,7 +25,9 @@
 			{/each}
 		{/each}
 	</div>
-	<p itemprop="text" class="text-center text-sm">
-		<slot name="caption"></slot>
-	</p>
+	{#if caption}
+		<p itemprop="text" class="text-center text-sm">
+			{@render caption()}
+		</p>
+	{/if}
 </div>
