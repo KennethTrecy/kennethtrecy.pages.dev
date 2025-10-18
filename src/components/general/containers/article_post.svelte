@@ -1,19 +1,24 @@
 <script lang="ts">
-	import { type ArticlePageMeta } from "@/types/content_metadata"
+import { type Snippet } from "svelte"
+import { type ArticlePageMeta } from "@/types/content_metadata"
 
-	import CommonHead from "@/components/general/common_head.svelte"
-	import PrimaryHeading from "@/components/general/headings/primary.svelte"
-	import PageDetailCard from "@/components/general/card/page_detail.svelte"
-	import StructuredArticle from "@/components/general/containers/structured_article.svelte"
-	import StructuredReference from "@/components/general/containers/structured_reference.svelte"
+import CommonHead from "@/components/general/common_head.svelte"
+import PrimaryHeading from "@/components/general/headings/primary.svelte"
+import PageDetailCard from "@/components/general/card/page_detail.svelte"
+import StructuredArticle from "@/components/general/containers/structured_article.svelte"
+import StructuredReference from "@/components/general/containers/structured_reference.svelte"
 
-	export let pageMeta: ArticlePageMeta
-	$: articleType = pageMeta.articleType
-	$: itemtype = articleType === "technical article"
-		? "https://schema.org/TechArticle"
-		: articleType === "blog post"
-			? "https://schema.org/BlogPosting"
-			: "https://schema.org/Article"
+let { pageMeta, children }: {
+	pageMeta: ArticlePageMeta
+	children: Snippet
+} = $props()
+
+let articleType = $derived(pageMeta.articleType)
+let itemtype = $derived(articleType === "technical article"
+	? "https://schema.org/TechArticle"
+	: articleType === "blog post"
+		? "https://schema.org/BlogPosting"
+		: "https://schema.org/Article")
 </script>
 
 <svelte:head>
@@ -21,10 +26,14 @@
 </svelte:head>
 
 <StructuredArticle {itemtype}>
-	<PrimaryHeading slot="title">{pageMeta.title}</PrimaryHeading>
-	<svelte:fragment slot="content">
-		<slot></slot>
+	{#snippet title()}
+		<PrimaryHeading>{pageMeta.title}</PrimaryHeading>
+	{/snippet}
+	{#snippet content()}
+		{@render children()}
 		<StructuredReference/>
-	</svelte:fragment>
-	<PageDetailCard slot="metadata" {pageMeta}/>
+	{/snippet}
+	{#snippet metadata()}
+		<PageDetailCard {pageMeta}/>
+	{/snippet}
 </StructuredArticle>
