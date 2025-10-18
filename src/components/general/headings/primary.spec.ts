@@ -1,14 +1,14 @@
 // @vitest-environment jsdom
 
 import { describe, expect, it } from "vitest"
-import { cleanup, render } from "@testing-library/svelte"
+import { cleanup, render } from "@testing-library/svelte/svelte5"
 
 import Component from "./primary.svelte"
 
 describe("Primary heading behavior", () => {
 	it("can render prefix as separate", async() => {
 		const prefix = "I. "
-		const { container } = render(Component, { prefix })
+		const { container } = render(Component, { prefix, children: () => "" })
 
 		const property = container.querySelector("[itemprop~=headline][itemprop~=name]")
 
@@ -19,7 +19,7 @@ describe("Primary heading behavior", () => {
 	})
 
 	it("can render one span if there is no prefix", async() => {
-		const { container } = render(Component)
+		const { container } = render(Component, { children: () => "" })
 
 		const spans = container.querySelectorAll("h1 > span")
 
