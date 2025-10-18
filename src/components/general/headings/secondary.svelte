@@ -1,18 +1,25 @@
 <script lang="ts">
-	import { type HeadingInfo, type SubheadingVariant } from "@/types/container_info"
-	import Subheading from "@/components/general/headings/subheading.svelte"
+import { type Snippet } from "svelte"
+import { type HeadingInfo, type SubheadingVariant } from "@/types/container_info"
+import Subheading from "@/components/general/headings/subheading.svelte"
 
-	export let headingInfo: HeadingInfo<"defined">
-	export let variant: SubheadingVariant = "headline"
-	let otherClasses: string[] = []
+let {
+	headingInfo,
+	variant = "headline",
+	class: otherClasses = [],
+	children
+}: {
+	headingInfo: HeadingInfo<"defined">;
+	variant?: SubheadingVariant
+	class?: string[]
+	children?: Snippet
+} = $props()
 
-	export { otherClasses as class }
-
-	$: joinedClasses = [
-		...otherClasses
-	]
+let joinedClasses = $derived([
+	...otherClasses
+])
 </script>
 
 <Subheading level={2} {headingInfo} {variant} class={joinedClasses}>
-	<slot></slot>
+	{@render children?.()}
 </Subheading>
