@@ -1,13 +1,20 @@
 <script lang="ts">
-	import { internalTypes } from "@/components/general/links/constants"
+import { type Snippet } from "svelte"
+import { internalTypes } from "@/components/general/links/constants"
 
-	import Link from "@/components/general/links/base.svelte"
+import Link from "@/components/general/links/base.svelte"
 
-	export let fragment: string
-	export let itemprop: string|undefined = undefined
-	let group: string[] = []
-
-	export { group as class }
+let {
+	fragment,
+	itemprop = undefined,
+	class: group = [],
+	children
+}: {
+	fragment: string
+	itemprop?: string|undefined
+	class?: string[]
+	children: Snippet
+} = $props()
 </script>
 
 <Link
@@ -16,5 +23,5 @@
 	class={group}
 	context="self"
 	{itemprop}>
-	<slot></slot>
+	{@render children()}
 </Link>
