@@ -1,150 +1,146 @@
 <script lang="ts">
-	import { page } from "$app/stores"
-	import { derived } from "svelte/store"
+import { page } from "$app/state"
 
-	import { type ReferenceInfo } from "@/types/reference"
-	import {
-		type CompleteCodeFileInfo,
-		type ExecutedCommandSetInfo,
-		type HeadingInfo
-	} from "@/types/container_info"
+import { type ReferenceInfo } from "@/types/reference"
+import {
+	type CompleteCodeFileInfo,
+	type ExecutedCommandSetInfo,
+	type HeadingInfo
+} from "@/types/container_info"
 
-	import indexPageMeta from "@/routes/meta"
-	import pageMeta from "@/routes/articles/key_steps_to_add_gramma_for_improved_ci/meta"
-	import {
-		successfulGrammarCheckSnapshot
-	} from "@/routes/articles/key_steps_to_add_gramma_for_improved_ci/shared_constants"
+import indexPageMeta from "@/routes/meta"
+import pageMeta from "@/routes/articles/key_steps_to_add_gramma_for_improved_ci/meta"
+import {
+	successfulGrammarCheckSnapshot
+} from "@/routes/articles/key_steps_to_add_gramma_for_improved_ci/shared_constants"
 
-	import makeSet from "@/utilities/resource/make_set"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import makeSet from "@/utilities/resource/make_set"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
-	import Bookmark from "@/components/general/links/bookmark.svelte"
-	import Citation from "@/components/general/links/citation.svelte"
-	import Keyword from "@/components/general/containers/keyword.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
-	import ArticlePost from "@/components/general/containers/article_post.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import ExampleCode from "@/components/general/containers/example_code.svelte"
-	import SimpleThing from "@/components/general/containers/simple_thing.svelte"
-	import LabeledThing from "@/components/general/containers/labeled_thing.svelte"
-	import ExampleCommand from "@/components/general/containers/example_command.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import Bookmark from "@/components/general/links/bookmark.svelte"
+import Citation from "@/components/general/links/citation.svelte"
+import Keyword from "@/components/general/containers/keyword.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import TertiaryHeading from "@/components/general/headings/tertiary.svelte"
+import ArticlePost from "@/components/general/containers/article_post.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import ExampleCode from "@/components/general/containers/example_code.svelte"
+import SimpleThing from "@/components/general/containers/simple_thing.svelte"
+import LabeledThing from "@/components/general/containers/labeled_thing.svelte"
+import ExampleCommand from "@/components/general/containers/example_command.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
 
-	const loadedFileInfos = derived(
-		page,
-		resolvedPage => (resolvedPage.data.loadedFileInfos ?? []) as CompleteCodeFileInfo[]
-	)
+const loadedFileInfos = $derived<CompleteCodeFileInfo[]>(page.data.loadedFileInfos ?? [])
 
-	const background = defineHeadingInfo({ "text": "Background" })
-	const prerequisites = defineHeadingInfo({ "text": "Prerequisites" })
-	const localSetup = defineHeadingInfo({ "text": "Local Setup" })
-	const setupSteps: HeadingInfo<"defined">[] = [
-		{ "text": "Installation of Required Package" },
-		{ "text": "Setup of E2E Testing Framework" }
-	].map(defineHeadingInfo)
-	const workflowConfiguration = defineHeadingInfo({ "text": "Workflow Configuration" })
-	const execution = defineHeadingInfo({ "text": "Execution" })
-	const summary = defineHeadingInfo({ "text": "Summary" })
+const background = defineHeadingInfo({ "text": "Background" })
+const prerequisites = defineHeadingInfo({ "text": "Prerequisites" })
+const localSetup = defineHeadingInfo({ "text": "Local Setup" })
+const setupSteps: HeadingInfo<"defined">[] = [
+	{ "text": "Installation of Required Package" },
+	{ "text": "Setup of E2E Testing Framework" }
+].map(defineHeadingInfo)
+const workflowConfiguration = defineHeadingInfo({ "text": "Workflow Configuration" })
+const execution = defineHeadingInfo({ "text": "Execution" })
+const summary = defineHeadingInfo({ "text": "Summary" })
 
-	const installRequiredPackageCommandInfos: ExecutedCommandSetInfo[] = [
-		{
-			"description": "If the reader is using version 16, the original package should be installed.",
-			"commands": [
-				{
-					"command": "npm install gramma",
-					"output": []
-				}
-			]
-		},
-		{
-			"description": "However, a reader that is using version 18, the forked package should be installed.",
-			"commands": [
-				{
-					"command": "npm install git+ssh://git@github.com:KennethTrecy/gramma.git#v1.7.0-rc1",
-					"output": []
-				}
-			]
-		}
-	]
-	const installOptionalPackageCommandInfo: ExecutedCommandSetInfo = {
-		"description": "Run the installation command below to perform an end-to-end test.",
+const installRequiredPackageCommandInfos: ExecutedCommandSetInfo[] = [
+	{
+		"description": "If the reader is using version 16, the original package should be installed.",
 		"commands": [
 			{
-				"command": "npm install @playwright/test",
+				"command": "npm install gramma",
+				"output": []
+			}
+		]
+	},
+	{
+		"description": "However, a reader that is using version 18, the forked package should be installed.",
+		"commands": [
+			{
+				"command": "npm install git+ssh://git@github.com:KennethTrecy/gramma.git#v1.7.0-rc1",
 				"output": []
 			}
 		]
 	}
-
-	const successfulGrammarCheckSnapshotSourceSet = makeSet(
-		successfulGrammarCheckSnapshot.responsiveLinks
-	)
-
-	const references: ReferenceInfo[] = [
+]
+const installOptionalPackageCommandInfo: ExecutedCommandSetInfo = {
+	"description": "Run the installation command below to perform an end-to-end test.",
+	"commands": [
 		{
-			"title": "About continuous integration - GitHub Docs",
-			"link": "https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration",
-			"itemtype": "https://schema.org/Article",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "GitHub Inc.",
-				"link": "https://github.com"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://github.com/github/docs/blob/main/LICENSE"
-			}
-		}, {
-			"title": indexPageMeta.title,
-			"link": indexPageMeta.pageURL,
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "inbound",
-			"author": indexPageMeta.authors[0],
-			"license": indexPageMeta.license
-		}, {
-			"title": "SEO Starter Guide: The Basics | Google Search Central  |  Documentation  |  Google Developers",
-			"link": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide#knowyourreaders",
-			"itemtype": "https://schema.org/Article",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Google Developers",
-				"link": "https://developers.google.com/terms/site-policies"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://creativecommons.org/licenses/by/4.0/"
-			}
-		}, {
-			"title": "LanguageTool",
-			"link": "https://github.com/languagetool-org/languagetool",
-			"itemtype": "https://schema.org/SoftwareSourceCode",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "LanguageTool Contributors",
-				"link": "https://github.com/languagetool-org/languagetool/graphs/contributors"
-			},
-			"license": {
-				"name": "LGPL-2.1",
-				"link": "https://github.com/languagetool-org/languagetool/blob/master/COPYING.txt"
-			}
-		}, {
-			"title": "Playwright",
-			"link": "https://github.com/microsoft/playwright",
-			"itemtype": "https://schema.org/SoftwareSourceCode",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Microsoft Corporation",
-				"link": "https://www.microsoft.com"
-			},
-			"license": {
-				"name": "Apache-2.0",
-				"link": "https://github.com/microsoft/playwright/blob/main/LICENSE"
-			}
+			"command": "npm install @playwright/test",
+			"output": []
 		}
 	]
+}
+
+const successfulGrammarCheckSnapshotSourceSet = makeSet(
+	successfulGrammarCheckSnapshot.responsiveLinks
+)
+
+const references: ReferenceInfo[] = [
+	{
+		"title": "About continuous integration - GitHub Docs",
+		"link": "https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration",
+		"itemtype": "https://schema.org/Article",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "GitHub Inc.",
+			"link": "https://github.com"
+		},
+		"license": {
+			"name": "CC BY 4.0",
+			"link": "https://github.com/github/docs/blob/main/LICENSE"
+		}
+	}, {
+		"title": indexPageMeta.title,
+		"link": indexPageMeta.pageURL,
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "inbound",
+		"author": indexPageMeta.authors[0],
+		"license": indexPageMeta.license
+	}, {
+		"title": "SEO Starter Guide: The Basics | Google Search Central  |  Documentation  |  Google Developers",
+		"link": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide#knowyourreaders",
+		"itemtype": "https://schema.org/Article",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Google Developers",
+			"link": "https://developers.google.com/terms/site-policies"
+		},
+		"license": {
+			"name": "CC BY 4.0",
+			"link": "https://creativecommons.org/licenses/by/4.0/"
+		}
+	}, {
+		"title": "LanguageTool",
+		"link": "https://github.com/languagetool-org/languagetool",
+		"itemtype": "https://schema.org/SoftwareSourceCode",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "LanguageTool Contributors",
+			"link": "https://github.com/languagetool-org/languagetool/graphs/contributors"
+		},
+		"license": {
+			"name": "LGPL-2.1",
+			"link": "https://github.com/languagetool-org/languagetool/blob/master/COPYING.txt"
+		}
+	}, {
+		"title": "Playwright",
+		"link": "https://github.com/microsoft/playwright",
+		"itemtype": "https://schema.org/SoftwareSourceCode",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Microsoft Corporation",
+			"link": "https://www.microsoft.com"
+		},
+		"license": {
+			"name": "Apache-2.0",
+			"link": "https://github.com/microsoft/playwright/blob/main/LICENSE"
+		}
+	}
+]
 </script>
 
 <ArticlePost {pageMeta}>
@@ -210,14 +206,14 @@
 		<SimpleText>
 			If the reader chose <Citation info={references[4]}>Playwright package</Citation>, use the following configuration below and save it as <em>playwright.config.ts</em> in the project root. Note that <code>npm run preview</code> would run HTTP server bound on a certain port. In the configuration below, it requires the server should be found on port 4173. The readers may customize the command and port according to their setup.
 		</SimpleText>
-		<ExampleCode codeInfo={$loadedFileInfos[0]}/>
+		<ExampleCode codeInfo={loadedFileInfos[0]}/>
 	</StructuredSection>
 	<StructuredSection id={workflowConfiguration.id}>
 		<SecondaryHeading headingInfo={workflowConfiguration}/>
 		<SimpleText>
 			Copy the code below and paste it a file under <em>.github/workflows</em> from the project root. The readers may name it whatever they like.
 		</SimpleText>
-		<ExampleCode codeInfo={$loadedFileInfos[1]} endLineIndex={38}/>
+		<ExampleCode codeInfo={loadedFileInfos[1]} endLineIndex={38}/>
 		<SimpleText>
 			On lines 30 – 31, it double-checks if the <Citation info={references[3]}>LanguageTool server</Citation> is not yet running. After that, the lines 34 – 35, explicitly starts it. The line 36 – 37 just confirms if the server is running. The grammar-checking activity starts at line 38.
 		</SimpleText>
@@ -227,7 +223,7 @@
 		<SimpleText>
 			Below is a sample test code of a grammar-checking activity. It should be in a file placed under <em>t/e2e</em> from the project root. It may be improved upon depending on the reader's use case, situation, or goal. Next to test code is the explanation or the idea behind the test code, regardless whether the reader chose <Citation info={references[4]}>Playwright package</Citation> or not.
 		</SimpleText>
-		<ExampleCode codeInfo={$loadedFileInfos[2]}/>
+		<ExampleCode codeInfo={loadedFileInfos[2]}/>
 		<StructuredList order="ascending">
 			<StructuredListItem>
 				<LabeledThing label="Page Selection Step">
