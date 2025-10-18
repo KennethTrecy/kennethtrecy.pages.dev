@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { externalTypes } from "@/components/general/links/constants"
+import { externalTypes } from "@/components/general/links/constants"
 
-	import Icon from "@/components/general/icon.svelte"
+import Icon from "@/components/general/icon.svelte"
 
-	export let title: string
-	export let description: string
-	export let link: string
+let { title, description, link }: {
+	title: string
+	description: string
+	link: string
+} = $props()
 </script>
 
 <div
