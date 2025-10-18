@@ -11,6 +11,7 @@ export default [
 	"daisyUI",
 	"GameMaker",
 	"Pruecendrae",
+	"Peratorakka",
 	"rgb-hex",
 	"Rollup",
 	"SvelteKit",
@@ -31,6 +32,7 @@ export default [
 	"npm",
 	".github",
 	".env",
+	"Lexer",
 
 	// Code identifiers
 	"img",
