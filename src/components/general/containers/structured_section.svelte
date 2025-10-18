@@ -1,14 +1,23 @@
 <script lang="ts">
-	export let id: string|undefined = undefined
-	export let itemprop = "hasPart"
-	export let itemtype = "https://schema.org/WebContent"
-	export let itemid: string|undefined = undefined
+import { type Snippet } from "svelte"
 
-	let otherClasses: string[] = []
+let {
+	id = undefined,
+	itemprop = "hasPart",
+	itemtype = "https://schema.org/WebContent",
+	itemid = undefined,
+	class: otherClasses = [],
+	children
+}: {
+	id?: string|undefined
+	itemprop?: string
+	itemtype?: string
+	itemid?: string|undefined
+	class?: string[]
+	children: Snippet
+} = $props()
 
-	export { otherClasses as class }
-
-	$: resolvedItemID = itemid ?? (typeof id === "undefined" ? undefined : `#${id}`)
+let resolvedItemID = $derived(itemid ?? (typeof id === "undefined" ? undefined : `#${id}`))
 </script>
 
 <section
@@ -18,5 +27,5 @@
 	{id}
 	itemid={resolvedItemID}
 	class={otherClasses.join(" ")}>
-	<slot></slot>
+	{@render children()}
 </section>
