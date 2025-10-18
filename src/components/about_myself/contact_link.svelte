@@ -1,16 +1,24 @@
 <script lang="ts">
-	import { authorTypes, externalTypes } from "@/components/general/links/constants"
+import { authorTypes, externalTypes } from "@/components/general/links/constants"
 
-	import Link from "@/components/general/links/base.svelte"
-	import BrandIcon from "@/components/general/brand_icon.svelte"
+import Link from "@/components/general/links/base.svelte"
+import BrandIcon from "@/components/general/brand_icon.svelte"
 
-	export let address: string
-	export let icon: string
-	export let platformName: string
-	export let username: string
-	export let usernameProperty: string
+let {
+	address,
+	icon,
+	platformName,
+	username,
+	usernameProperty
+}: {
+	address: string
+	icon: string
+	platformName: string
+	username: string
+	usernameProperty: string
+} = $props()
 
-	const relationships = [ ...externalTypes, ...authorTypes ]
+const relationships = [ ...externalTypes, ...authorTypes ]
 </script>
 
 <Link
