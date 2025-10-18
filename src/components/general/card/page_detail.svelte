@@ -1,46 +1,48 @@
 <script lang="ts">
-	import { type PageMeta } from "@/types/content_metadata"
+import { type PageMeta } from "@/types/content_metadata"
 
-	import { authorTypes, internalTypes } from "@/components/general/links/constants"
-	import {
-		principlesPath,
-		draftStatusURL,
-		publishedStatusURL
-	} from "@/constants/schema_collection"
+import { authorTypes, internalTypes } from "@/components/general/links/constants"
+import {
+	principlesPath,
+	draftStatusURL,
+	publishedStatusURL
+} from "@/constants/schema_collection"
 
-	import BaseLink from "@/components/general/links/base.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
+import BaseLink from "@/components/general/links/base.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
 
-	export let pageMeta: PageMeta
+let { pageMeta }: {
+	pageMeta: PageMeta
+} = $props()
 
-	const dateTimeFormatOptions: Partial<Intl.DateTimeFormatOptions> = {
-		"year": "numeric",
-		"month": "long",
-		"day": "numeric",
-		"hour": "numeric",
-		"minute": "numeric",
-		"timeZoneName": "short",
-		"timeZone": "UTC"
-	}
+const dateTimeFormatOptions: Partial<Intl.DateTimeFormatOptions> = {
+	"year": "numeric",
+	"month": "long",
+	"day": "numeric",
+	"hour": "numeric",
+	"minute": "numeric",
+	"timeZoneName": "short",
+	"timeZone": "UTC"
+}
 
-	$: dateTimePublished = pageMeta.datePublished.toISOString()
-	$: humanReadableDatePublished = pageMeta.datePublished.toLocaleString(
-		"en",
-		dateTimeFormatOptions
-	)
-	$: dateTimeModified = pageMeta.dateModified.toISOString()
-	$: humanReadableDateModified = pageMeta.dateModified.toLocaleString("en", dateTimeFormatOptions)
-	$: hasModified = dateTimePublished !== dateTimeModified
-	$: isDraft = Number(pageMeta.version) < 1
-	$: publishStatus = isDraft ? "draft" : "published"
-	$: publishStatusURL = isDraft ? draftStatusURL : publishedStatusURL
+let dateTimePublished = $derived(pageMeta.datePublished.toISOString())
+let humanReadableDatePublished = $derived(pageMeta.datePublished.toLocaleString(
+	"en",
+	dateTimeFormatOptions
+))
+let dateTimeModified = $derived(pageMeta.dateModified.toISOString())
+let humanReadableDateModified = $derived(pageMeta.dateModified.toLocaleString("en", dateTimeFormatOptions))
+let hasModified = $derived(dateTimePublished !== dateTimeModified)
+let isDraft = $derived(Number(pageMeta.version) < 1)
+let publishStatus = $derived(isDraft ? "draft" : "published")
+let publishStatusURL = $derived(isDraft ? draftStatusURL : publishedStatusURL)
 
-	const repositoryURL = "https://github.com/KennethTrecy/kennethtrecy.pages.dev"
-	const branch = "master"
-	$: targetFilePath = `src/routes${(pageMeta.path === "/" ? "" : pageMeta.path)}/+page.svelte`
-	$: editLink = `${repositoryURL}/edit/${branch}/${targetFilePath}`
-	$: issueLink = `${repositoryURL}/issues/new?template=page_concern.md`
-	$: viewLink = `${repositoryURL}/blob/${branch}/${targetFilePath}`
+const repositoryURL = "https://github.com/KennethTrecy/kennethtrecy.pages.dev"
+const branch = "master"
+let targetFilePath = $derived(`src/routes${(pageMeta.path === "/" ? "" : pageMeta.path)}/+page.svelte`)
+let editLink = $derived(`${repositoryURL}/edit/${branch}/${targetFilePath}`)
+let issueLink = $derived(`${repositoryURL}/issues/new?template=page_concern.md`)
+let viewLink = $derived(`${repositoryURL}/blob/${branch}/${targetFilePath}`)
 </script>
 
 <div class="not-prose card bg-base-200">
