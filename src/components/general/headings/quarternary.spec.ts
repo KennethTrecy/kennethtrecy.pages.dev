@@ -9,7 +9,7 @@ import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
 import Component from "./quarternary.svelte"
 
-describe("Tertiary heading behavior", () => {
+describe("Quarternary heading behavior", () => {
 	it("can render prefix as separate", async() => {
 		const headingInfo = defineHeadingInfo({
 			"prefix": "I. ",
@@ -18,7 +18,7 @@ describe("Tertiary heading behavior", () => {
 		const { container } = render(Component, { headingInfo, "children": () => "" })
 
 		const property = container.querySelector("[itemprop~=headline][itemprop~=name]")
-		const spans = container.querySelectorAll("h3 span")
+		const spans = container.querySelectorAll("h4 span")
 
 		expect(property).not.toBeNull()
 		expect(property?.innerHTML).not.toContain(headingInfo.prefix)
@@ -34,7 +34,7 @@ describe("Tertiary heading behavior", () => {
 		})
 		const { container } = render(Component, { headingInfo, "children": () => "" })
 
-		const spans = container.querySelectorAll("h3 span")
+		const spans = container.querySelectorAll("h4 span")
 
 		expect(spans).toHaveLength(2)
 
@@ -47,7 +47,7 @@ describe("Tertiary heading behavior", () => {
 		})
 		const { container } = render(Component, { headingInfo, "children": () => "" })
 
-		const heading = container.querySelector("h3") as HTMLHeadingElement
+		const heading = container.querySelector("h4") as HTMLHeadingElement
 		await fireEvent.mouseOver(heading)
 
 		const bookmark = container.querySelector(".opacity-0")
@@ -62,7 +62,7 @@ describe("Tertiary heading behavior", () => {
 		})
 		const { container } = render(Component, { headingInfo, "children": () => "" })
 
-		const heading = container.querySelector("h3") as HTMLHeadingElement
+		const heading = container.querySelector("h4") as HTMLHeadingElement
 		await fireEvent.mouseOver(heading)
 		await fireEvent.mouseOut(heading)
 
@@ -84,7 +84,7 @@ describe("Tertiary heading behavior", () => {
 		})
 
 		const property = container.querySelector("[itemprop~=headline][itemprop~=name]")
-		const spans = container.querySelectorAll("h3 span")
+		const spans = container.querySelectorAll("h4 span")
 
 		expect(property).toBeNull()
 		expect(spans).toHaveLength(2)
