@@ -1,18 +1,23 @@
 <script lang="ts">
-	import { type CompleteCodeFileInfo, type ExecutedCommandSetInfo } from "@/types/container_info"
+import { type CompleteCodeFileInfo, type ExecutedCommandSetInfo } from "@/types/container_info"
 
-	import ExternalLink from "@/components/general/links/external.svelte"
-	import ExampleCommand from "@/components/general/containers/example_command.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
+import ExampleCommand from "@/components/general/containers/example_command.svelte"
 
-	export let codeInfo: CompleteCodeFileInfo
-	export let commandInfos: ExecutedCommandSetInfo
+let {
+	codeInfo,
+	commandInfos
+}: {
+	codeInfo: CompleteCodeFileInfo
+	commandInfos: ExecutedCommandSetInfo
+} = $props()
 </script>
 
 <ExampleCommand {commandInfos}>
-	<svelte:fragment slot="caption">
+	{#snippet caption()}
 		Output of
 		<ExternalLink
 			address={codeInfo.viewURL}
-			itemprop={[ "mainEntityOfPage" ]}>{codeInfo.path}</ExternalLink>
-	</svelte:fragment>
+			itemprop={"mainEntityOfPage"}>{codeInfo.path}</ExternalLink>
+	{/snippet}
 </ExampleCommand>
