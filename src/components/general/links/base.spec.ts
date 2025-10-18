@@ -2,7 +2,7 @@
 
 import { type AnchorLinkType } from "@/types/container_info"
 
-import { cleanup, render } from "@testing-library/svelte"
+import { cleanup, render } from "@testing-library/svelte/svelte5"
 import { describe, expect, it } from "vitest"
 
 import Component from "./base.svelte"
@@ -13,7 +13,8 @@ describe("Base link behavior", () => {
 		const relationship: AnchorLinkType[] = [ "external" ]
 		const { container } = render(Component, {
 			address,
-			relationship
+			relationship,
+			"children": () => ""
 		})
 
 		const property = container.querySelector("[itemtype]")
@@ -30,7 +31,8 @@ describe("Base link behavior", () => {
 		const { container } = render(Component, {
 			itemtype,
 			address,
-			relationship
+			relationship,
+			"children": () => ""
 		})
 
 		const property = container.querySelector("[itemtype]")
