@@ -1,28 +1,38 @@
 <script lang="ts">
-	import { type ListVariant, type Order } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type ListVariant, type Order } from "@/types/container_info"
 
-	export let order: Order
+const itemtype = "https://schema.org/ItemList"
 
-	export let hasOwnScope = true
-	export let itemprop = "mainEntity"
-	export const itemtype = "https://schema.org/ItemList"
-	export let variant: ListVariant = "normal"
-	let otherClasses: string[] = []
-	const cardVariantClasses = [ "flex", "flex-col", "list-outside", "list-none" ]
+let {
+	order,
+	hasOwnScope = true,
+	itemprop = "mainEntity",
+	variant = "normal",
+	class: otherClasses = [],
+	children
+}: {
+	order: Order
+	hasOwnScope?: boolean
+	itemprop?: string
+	variant?: ListVariant
+	class?: string[]
+	children?: Snippet
+} = $props()
+const cardVariantClasses = [ "flex", "flex-col", "list-outside", "list-none" ]
 
-	$: initialClasses = variant === "project"
-		? [ "project_list", "flex-wrap", ...cardVariantClasses ]
-		: variant === "card"
-			? [ "card_list", ...cardVariantClasses, ]
-			: []
-	export { otherClasses as class }
+let initialClasses = $derived(variant === "project"
+	? [ "project_list", "flex-wrap", ...cardVariantClasses ]
+	: variant === "card"
+		? [ "card_list", ...cardVariantClasses, ]
+		: [])
 
-	$: joinedClasses = [ ...initialClasses, ...otherClasses ].join(" ")
-	$: listOrder = order === "unordered"
-		? "https://schema.org/ItemListUnordered"
-		: order === "ascending"
-			? "https://schema.org/ItemListOrderAscending"
-			: "https://schema.org/ItemListOrderDescending"
+let joinedClasses = $derived([ ...initialClasses, ...otherClasses ].join(" "))
+let listOrder = $derived(order === "unordered"
+	? "https://schema.org/ItemListUnordered"
+	: order === "ascending"
+		? "https://schema.org/ItemListOrderAscending"
+		: "https://schema.org/ItemListOrderDescending")
 </script>
 
 {#if order === "unordered"}
@@ -33,12 +43,12 @@
 			{itemtype}
 			class={joinedClasses}>
 			<link itemprop="itemListOrder" href={listOrder}/>
-			<slot></slot>
+			{@render children?.()}
 		</ul>
 	{:else}
 		<ul class={joinedClasses}>
 			<link itemprop="itemListOrder" href={listOrder}/>
-			<slot></slot>
+			{@render children?.()}
 		</ul>
 	{/if}
 {:else}
@@ -49,18 +59,12 @@
 			{itemtype}
 			class={joinedClasses}>
 			<link itemprop="itemListOrder" href={listOrder}/>
-			<slot></slot>
+			{@render children?.()}
 		</ol>
 	{:else}
 		<ol class={joinedClasses}>
 			<link itemprop="itemListOrder" href={listOrder}/>
-			<slot></slot>
+			{@render children?.()}
 		</ol>
 	{/if}
 {/if}
-
-<style lang="postcss">
-	ul.project_list, ol.card_list {
-		@apply m-0 p-0;
-	}
-</style>
