@@ -1,14 +1,16 @@
 <script lang="ts">
-	export let name: string
+let {
+	name,
+	class: otherClasses = []
+}: {
+	name: string
+	class?: string[]
+} = $props()
 
-	let otherClasses: string[] = []
-
-	export { otherClasses as class }
-
-	$: joinedClasses = [
-		"material-symbols-outlined",
-		...otherClasses
-	].join(" ")
+let joinedClasses = $derived([
+	"material-symbols-outlined",
+	...otherClasses
+].join(" "))
 </script>
 
 <span class={joinedClasses} data-icon={name}></span>
