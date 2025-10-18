@@ -1,31 +1,33 @@
 <script lang="ts">
-	import { MAIN_CONTENT_ID } from "@/constants/miscellaneous_meta"
+import { type Snippet } from "svelte"
 
-	import Heading from "@/components/general/headings/base.svelte"
+import { MAIN_CONTENT_ID } from "@/constants/miscellaneous_meta"
 
-	let otherClasses: string[] = []
-	export let prefix = ""
-	export { otherClasses as class }
+import Heading from "@/components/general/headings/base.svelte"
 
-	$: joinedClasses = [
-		"prose",
-		"md:prose-lg",
-		"text-center",
-		"md:text-left",
-		...otherClasses
-	]
-	$: hasPrefix = prefix !== ""
+let { class: otherClasses = [], prefix = "", children }: {
+	class?: string[]
+	prefix?: string
+	children: Snippet
+} = $props()
+
+let joinedClasses = $derived([
+	"text-center",
+	"md:text-left",
+	...otherClasses
+])
+let hasPrefix = $derived(prefix !== "")
 </script>
 
 <Heading level={1} fragment={`#${MAIN_CONTENT_ID}`} class={joinedClasses}>
 	{#if hasPrefix}
-		<span class="text-5xl">
+		<span class="text-3xl">
 			<span>{prefix}</span>
-			<span itemprop="headline name"><slot></slot></span>
+			<span itemprop="headline name">{@render children()}</span>
 		</span>
 	{:else}
-		<span itemprop="headline name" class="text-5xl">
-			<slot></slot>
+		<span itemprop="headline name" class="text-3xl">
+			{@render children()}
 		</span>
 	{/if}
 </Heading>
