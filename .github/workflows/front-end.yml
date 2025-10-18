@@ -1,7 +1,11 @@
 name: Web Front-end Tests
 
 on:
-  push: []
+  push:
+    branches:
+      - master
+      - staging
+      - dev
   pull_request:
     types:
       - opened

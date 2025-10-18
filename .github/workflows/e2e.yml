@@ -1,7 +1,11 @@
 name: E2E Tests
 
 on:
-  push: []
+  push:
+    branches:
+      - master
+      - staging
+      - dev
   pull_request:
     types:
       - opened
