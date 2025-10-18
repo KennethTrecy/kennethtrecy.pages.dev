@@ -1,10 +1,24 @@
 <script lang="ts">
-	import { browser } from "$app/environment"
-	import { MAIN_CONTENT_ID } from "@/constants/miscellaneous_meta"
+import { type Snippet } from "svelte"
 
-	export let itemtype = "https://schema.org/WebContent"
+import { browser } from "$app/environment"
+import { MAIN_CONTENT_ID } from "@/constants/miscellaneous_meta"
 
-	const currentLocation = browser ? location.href : ""
+let {
+	itemtype = "https://schema.org/WebContent",
+	title,
+	aside,
+	content,
+	metadata
+}: {
+	itemtype?: string
+	title: Snippet
+	aside?: Snippet
+	content: Snippet
+	metadata?: Snippet
+} = $props()
+
+const currentLocation = browser ? location.href : ""
 </script>
 
 <div class="flex-1 m-0 h-full flex flex-col justify-center items-stretch container">
@@ -15,24 +29,26 @@
 		itemscope
 		itemtype="https://schema.org/WebPageElement"
 		class="container flex-1 flex flex-col justify-center items-center">
-		<slot name="title"></slot>
+		{@render title()}
 		<div class="flex flex-col md:flex-row-reverse justify-center items-stretch max-w-full">
-			{#if $$slots.aside}
+			{#if aside}
 				<!-- TODO: Create a side navigation for articles -->
-				<aside class="prose md:prose-lg w-96 flex flex-row justify-left items-start">
-					<slot name="aside"></slot>
+				<aside class="prose prose-neutral w-96 flex flex-row justify-left items-start">
+					{@render aside()}
 				</aside>
 			{/if}
 			<div
 				itemprop="mainEntity"
 				itemscope
 				{itemtype}
-				class="prose md:prose-lg pb-8 text-justify">
-				<slot name="content"></slot>
+				class="prose prose-neutral pb-8 text-justify">
+				{@render content()}
 			</div>
 		</div>
-		<footer class="prose md:prose-lg pb-8">
-			<slot name="metadata"></slot>
-		</footer>
+		{#if metadata}
+			<footer class="prose prose-neutral pb-8">
+				{@render metadata()}
+			</footer>
+		{/if}
 	</article>
 </div>
