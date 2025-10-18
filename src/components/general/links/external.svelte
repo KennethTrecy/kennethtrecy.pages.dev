@@ -1,23 +1,33 @@
 <script lang="ts">
-	import { type AnchorLinkType } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type AnchorLinkType } from "@/types/container_info"
 
-	import { externalTypes } from "@/components/general/links/constants"
+import { externalTypes } from "@/components/general/links/constants"
 
-	import Link from "@/components/general/links/base.svelte"
+import Link from "@/components/general/links/base.svelte"
 
-	export let address: string
-	export let itemprop: string|undefined = undefined
-	export let itemtype: string|undefined = undefined
-	export let relationship: AnchorLinkType|AnchorLinkType[] = []
+let {
+	address,
+	itemprop = undefined,
+	itemtype = undefined,
+	relationship = [],
+	children
+}: {
+	address: string
+	itemprop?: string|undefined
+	itemtype?: string|undefined
+	relationship?: AnchorLinkType|AnchorLinkType[]
+	children: Snippet
+} = $props()
 
-	$: relationshipTypes = [
-		...externalTypes,
-		...Array.isArray(relationship)
-			? relationship
-			: [ relationship ]
-	]
+let relationshipTypes = $derived([
+	...externalTypes,
+	...Array.isArray(relationship)
+		? relationship
+		: [ relationship ]
+])
 </script>
 
 <Link address={address} relationship={relationshipTypes} context="other" {itemprop} {itemtype}>
-	<slot></slot>
+	{@render children()}
 </Link>
