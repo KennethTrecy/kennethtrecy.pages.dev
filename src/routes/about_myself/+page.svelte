@@ -1,231 +1,231 @@
 <script lang="ts">
-	import pageMeta from "@/routes/about_myself/meta"
+import pageMeta from "@/routes/about_myself/meta"
 
-	import CommonHead from "@/components/general/common_head.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
-	import ContactLink from "@/components/about_myself/contact_link.svelte"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
-	import PageDetailCard from "@/components/general/card/page_detail.svelte"
-	import PrimaryHeading from "@/components/general/headings/primary.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import StructuredArticle from "@/components/general/containers/structured_article.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import CommonHead from "@/components/general/common_head.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
+import ContactLink from "@/components/about_myself/contact_link.svelte"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import PageDetailCard from "@/components/general/card/page_detail.svelte"
+import PrimaryHeading from "@/components/general/headings/primary.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import StructuredArticle from "@/components/general/containers/structured_article.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
 
-	interface Technology {
-		name: string,
-		homepage: string
+interface Technology {
+	name: string,
+	homepage: string
+}
+
+interface TechnologyArea {
+	name: string,
+	technologies: Technology[]
+}
+
+const journey = defineHeadingInfo({
+	"prefix": "🛩️",
+	"text": "Journey"
+})
+const skills = defineHeadingInfo({
+	"prefix": "✨",
+	"text": "Skills"
+})
+const contacts = defineHeadingInfo({
+	"prefix": "✉️",
+	"text": "Contact Details"
+})
+
+const technologies: TechnologyArea[] = [
+	{
+		"name": "Front-end",
+		"technologies": [
+			{
+				"name": "Vue.js",
+				"homepage": "https://vuejs.org/"
+			}, {
+				"name": "React",
+				"homepage": "https://reactjs.org/"
+			}, {
+				"name": "React",
+				"homepage": "https://reactjs.org/"
+			}, {
+				"name": "Windi CSS",
+				"homepage": "https://windicss.org/"
+			}, {
+				"name": "Bootstrap",
+				"homepage": "https://getbootstrap.com/"
+			}, {
+				"name": "Svelte",
+				"homepage": "https://svelte.dev/"
+			}, {
+				"name": "SvelteKit",
+				"homepage": "https://kit.svelte.dev/"
+			}, {
+				"name": "daisyUI",
+				"homepage": "https://daisyui.com/"
+			}, {
+				"name": "Tailwind CSS",
+				"homepage": "https://tailwindcss.com/"
+			}
+		]
+	}, {
+		"name": "Back-end",
+		"technologies": [
+			{
+				"name": "CodeIgniter",
+				"homepage": "https://codeigniter.com/"
+			}, {
+				"name": "Laravel",
+				"homepage": "https://laravel.com/"
+			}, {
+				"name": "Express",
+				"homepage": "https://expressjs.com/"
+			}, {
+				"name": "Apache HTTP Server",
+				"homepage": "https://httpd.apache.org/"
+			}, {
+				"name": "Node.js",
+				"homepage": "https://nodejs.org/en/"
+			}, {
+				"name": "MySQL",
+				"homepage": "https://mysql.com/"
+			}, {
+				"name": "PostgreSQL",
+				"homepage": "https://postgresql.org/"
+			}, {
+				"name": "MongoDB",
+				"homepage": "https://www.mongodb.com/"
+			}, {
+				"name": "SQLite",
+				"homepage": "https://www.sqlite.org/index.html"
+			}, {
+				"name": "Sequelize",
+				"homepage": "https://sequelize.org/"
+			}
+		]
+	}, {
+		"name": "DevOps and QA",
+		"technologies": [
+			{
+				"name": "GitHub Actions",
+				"homepage": "https://github.com/features/actions"
+			}, {
+				"name": "Jest",
+				"homepage": "https://jestjs.io/"
+			}, {
+				"name": "PHPUnit",
+				"homepage": "https://phpunit.de/index.html"
+			}, {
+				"name": "Playwright",
+				"homepage": "https://playwright.dev/"
+			}, {
+				"name": "Postman",
+				"homepage": "https://www.postman.com/"
+			}, {
+				"name": "Docker",
+				"homepage": "https://www.docker.com/"
+			}, {
+				"name": "DigitalOcean",
+				"homepage": "https://www.digitalocean.com/"
+			}, {
+				"name": "TestCafe",
+				"homepage": "https://testcafe.io/"
+			}
+		]
+	}, {
+		"name": "Tools and Collaboration",
+		"technologies": [
+			{
+				"name": "Git",
+				"homepage": "https://git-scm.com/"
+			}, {
+				"name": "GitHub",
+				"homepage": "https://github.com/"
+			}, {
+				"name": "ESLint",
+				"homepage": "https://eslint.org/"
+			}, {
+				"name": "npm",
+				"homepage": "https://www.npmjs.com/"
+			}, {
+				"name": "rollup.js",
+				"homepage": "https://rollupjs.org/guide/en/"
+			}, {
+				"name": "Vite",
+				"homepage": "https://vitejs.dev/"
+			}, {
+				"name": "nodemon",
+				"homepage": "https://nodemon.io/"
+			}, {
+				"name": "Composer",
+				"homepage": "https://getcomposer.org/"
+			}, {
+				"name": "Gitea",
+				"homepage": "https://gitea.io/en-us/"
+			}, {
+				"name": "GNU Privacy Guard",
+				"homepage": "https://www.gnupg.org/"
+			}, {
+				"name": "OpenSSL",
+				"homepage": "https://www.openssl.org/"
+			}, {
+				"name": "Technitium DNS Server",
+				"homepage": "https://technitium.com/dns/"
+			}
+		]
+	}, {
+		"name": "Languages (Specialization)",
+		"technologies": [
+			{
+				"name": "Markdown",
+				"homepage": "https://www.markdownguide.org/"
+			}, {
+				"name": "HTML",
+				"homepage": "https://html.spec.whatwg.org/"
+			}, {
+				"name": "JavaScript",
+				"homepage": "https://developer.mozilla.org/en-US/docs/Web/javascript"
+			}, {
+				"name": "CSS",
+				"homepage": "https://developer.mozilla.org/en-US/docs/Web/css"
+			}, {
+				"name": "PHP",
+				"homepage": "https://www.php.net/"
+			}, {
+				"name": "TypeScript",
+				"homepage": "https://www.typescriptlang.org/"
+			}, {
+				"name": "Sass",
+				"homepage": "https://sass-lang.com/"
+			}, {
+				"name": "Rust",
+				"homepage": "https://www.rust-lang.org/"
+			}, {
+				"name": "JSON",
+				"homepage": "https://www.json.org/json-en.html"
+			}
+		]
+	}, {
+		"name": "Languages (General)",
+		"technologies": [
+			{
+				"name": "C",
+				"homepage": "https://en.cppreference.com/w/c"
+			}, {
+				"name": "C++",
+				"homepage": "https://en.cppreference.com/w/cpp"
+			}, {
+				"name": "Java",
+				"homepage": "https://www.java.com/en/"
+			}, {
+				"name": "Python",
+				"homepage": "https://www.python.org/"
+			}, {
+				"name": "Perl",
+				"homepage": "https://www.perl.org/"
+			}
+		]
 	}
-
-	interface TechnologyArea {
-		name: string,
-		technologies: Technology[]
-	}
-
-	const journey = defineHeadingInfo({
-		"prefix": "🛩️",
-		"text": "Journey"
-	})
-	const skills = defineHeadingInfo({
-		"prefix": "✨",
-		"text": "Skills"
-	})
-	const contacts = defineHeadingInfo({
-		"prefix": "✉️",
-		"text": "Contact Details"
-	})
-
-	const technologies: TechnologyArea[] = [
-		{
-			"name": "Front-end",
-			"technologies": [
-				{
-					"name": "Vue.js",
-					"homepage": "https://vuejs.org/"
-				}, {
-					"name": "React",
-					"homepage": "https://reactjs.org/"
-				}, {
-					"name": "React",
-					"homepage": "https://reactjs.org/"
-				}, {
-					"name": "Windi CSS",
-					"homepage": "https://windicss.org/"
-				}, {
-					"name": "Bootstrap",
-					"homepage": "https://getbootstrap.com/"
-				}, {
-					"name": "Svelte",
-					"homepage": "https://svelte.dev/"
-				}, {
-					"name": "SvelteKit",
-					"homepage": "https://kit.svelte.dev/"
-				}, {
-					"name": "daisyUI",
-					"homepage": "https://daisyui.com/"
-				}, {
-					"name": "Tailwind CSS",
-					"homepage": "https://tailwindcss.com/"
-				}
-			]
-		}, {
-			"name": "Back-end",
-			"technologies": [
-				{
-					"name": "CodeIgniter",
-					"homepage": "https://codeigniter.com/"
-				}, {
-					"name": "Laravel",
-					"homepage": "https://laravel.com/"
-				}, {
-					"name": "Express",
-					"homepage": "https://expressjs.com/"
-				}, {
-					"name": "Apache HTTP Server",
-					"homepage": "https://httpd.apache.org/"
-				}, {
-					"name": "Node.js",
-					"homepage": "https://nodejs.org/en/"
-				}, {
-					"name": "MySQL",
-					"homepage": "https://mysql.com/"
-				}, {
-					"name": "PostgreSQL",
-					"homepage": "https://postgresql.org/"
-				}, {
-					"name": "MongoDB",
-					"homepage": "https://www.mongodb.com/"
-				}, {
-					"name": "SQLite",
-					"homepage": "https://www.sqlite.org/index.html"
-				}, {
-					"name": "Sequelize",
-					"homepage": "https://sequelize.org/"
-				}
-			]
-		}, {
-			"name": "DevOps and QA",
-			"technologies": [
-				{
-					"name": "GitHub Actions",
-					"homepage": "https://github.com/features/actions"
-				}, {
-					"name": "Jest",
-					"homepage": "https://jestjs.io/"
-				}, {
-					"name": "PHPUnit",
-					"homepage": "https://phpunit.de/index.html"
-				}, {
-					"name": "Playwright",
-					"homepage": "https://playwright.dev/"
-				}, {
-					"name": "Postman",
-					"homepage": "https://www.postman.com/"
-				}, {
-					"name": "Docker",
-					"homepage": "https://www.docker.com/"
-				}, {
-					"name": "DigitalOcean",
-					"homepage": "https://www.digitalocean.com/"
-				}, {
-					"name": "TestCafe",
-					"homepage": "https://testcafe.io/"
-				}
-			]
-		}, {
-			"name": "Tools and Collaboration",
-			"technologies": [
-				{
-					"name": "Git",
-					"homepage": "https://git-scm.com/"
-				}, {
-					"name": "GitHub",
-					"homepage": "https://github.com/"
-				}, {
-					"name": "ESLint",
-					"homepage": "https://eslint.org/"
-				}, {
-					"name": "npm",
-					"homepage": "https://www.npmjs.com/"
-				}, {
-					"name": "rollup.js",
-					"homepage": "https://rollupjs.org/guide/en/"
-				}, {
-					"name": "Vite",
-					"homepage": "https://vitejs.dev/"
-				}, {
-					"name": "nodemon",
-					"homepage": "https://nodemon.io/"
-				}, {
-					"name": "Composer",
-					"homepage": "https://getcomposer.org/"
-				}, {
-					"name": "Gitea",
-					"homepage": "https://gitea.io/en-us/"
-				}, {
-					"name": "GNU Privacy Guard",
-					"homepage": "https://www.gnupg.org/"
-				}, {
-					"name": "OpenSSL",
-					"homepage": "https://www.openssl.org/"
-				}, {
-					"name": "Technitium DNS Server",
-					"homepage": "https://technitium.com/dns/"
-				}
-			]
-		}, {
-			"name": "Languages (Specialization)",
-			"technologies": [
-				{
-					"name": "Markdown",
-					"homepage": "https://www.markdownguide.org/"
-				}, {
-					"name": "HTML",
-					"homepage": "https://html.spec.whatwg.org/"
-				}, {
-					"name": "JavaScript",
-					"homepage": "https://developer.mozilla.org/en-US/docs/Web/javascript"
-				}, {
-					"name": "CSS",
-					"homepage": "https://developer.mozilla.org/en-US/docs/Web/css"
-				}, {
-					"name": "PHP",
-					"homepage": "https://www.php.net/"
-				}, {
-					"name": "TypeScript",
-					"homepage": "https://www.typescriptlang.org/"
-				}, {
-					"name": "Sass",
-					"homepage": "https://sass-lang.com/"
-				}, {
-					"name": "Rust",
-					"homepage": "https://www.rust-lang.org/"
-				}, {
-					"name": "JSON",
-					"homepage": "https://www.json.org/json-en.html"
-				}
-			]
-		}, {
-			"name": "Languages (General)",
-			"technologies": [
-				{
-					"name": "C",
-					"homepage": "https://en.cppreference.com/w/c"
-				}, {
-					"name": "C++",
-					"homepage": "https://en.cppreference.com/w/cpp"
-				}, {
-					"name": "Java",
-					"homepage": "https://www.java.com/en/"
-				}, {
-					"name": "Python",
-					"homepage": "https://www.python.org/"
-				}, {
-					"name": "Perl",
-					"homepage": "https://www.perl.org/"
-				}
-			]
-		}
-	]
+]
 </script>
 
 <svelte:head>
@@ -233,8 +233,10 @@
 </svelte:head>
 
 <StructuredArticle itemtype="https://schema.org/Person">
-	<PrimaryHeading slot="title">{pageMeta.title}</PrimaryHeading>
-	<svelte:fragment slot="content">
+	{#snippet title()}
+		<PrimaryHeading >{pageMeta.title}</PrimaryHeading>
+	{/snippet}
+	{#snippet content()}
 		<section id={journey.id}>
 			<SecondaryHeading headingInfo={journey} variant="raw"/>
 			<p>
@@ -311,17 +313,6 @@
 					itemtype="https://schema.org/ContactPoint"
 					class={[ "flex", "flex-row", "flex-nowrap", "items-center" ]}>
 					<ContactLink
-						address="https://www.linkedin.com/in/kenneth-trecy-tobias/"
-						icon="linkedin"
-						platformName="LinkedIn"
-						username="kenneth-trecy-tobias"
-						usernameProperty="name"/>
-				</StructuredListItem>
-				<StructuredListItem
-					itemprop="contactPoint"
-					itemtype="https://schema.org/ContactPoint"
-					class={[ "flex", "flex-row", "flex-nowrap", "items-center" ]}>
-					<ContactLink
 						address="https://github.com/KennethTrecy/"
 						icon="github"
 						platformName="GitHub"
@@ -341,6 +332,8 @@
 				</StructuredListItem>
 			</ul>
 		</section>
-	</svelte:fragment>
-	<PageDetailCard slot="metadata" {pageMeta}/>
+	{/snippet}
+	{#snippet metadata()}
+		<PageDetailCard {pageMeta}/>
+	{/snippet}
 </StructuredArticle>
