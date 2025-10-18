@@ -3,7 +3,7 @@
 
 import { type ReferenceInfo } from "@/types/reference"
 
-import { cleanup, render } from "@testing-library/svelte"
+import { cleanup, render } from "@testing-library/svelte/svelte5"
 import { describe, expect, it } from "vitest"
 
 import Component from "./link.svelte"
@@ -22,7 +22,7 @@ describe("Reference link behavior", () => {
 				"link": "https://example.com/a"
 			}
 		}
-		const { container } = render(Component, { info })
+		const { container } = render(Component, { props: { info } })
 
 		const citation = container.querySelector("cite")
 
@@ -48,7 +48,7 @@ describe("Reference link behavior", () => {
 				"link": "https://example.com/license_example"
 			}
 		}
-		const { container } = render(Component, { info })
+		const { container } = render(Component, { props: { info } })
 
 		const citation = container.querySelector("cite")
 
@@ -79,7 +79,7 @@ describe("Reference link behavior", () => {
 				}
 			]
 		}
-		const { container } = render(Component, { info })
+		const { container } = render(Component, { props: { info } })
 
 		const citation = container.querySelector("cite")
 
@@ -114,7 +114,7 @@ describe("Reference link behavior", () => {
 				}
 			]
 		}
-		const { container } = render(Component, { info })
+		const { container } = render(Component, { props: { info } })
 
 		const citation = container.querySelector("cite")
 
