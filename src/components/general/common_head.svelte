@@ -1,27 +1,33 @@
 <script lang="ts">
-	import { type PageMeta } from "@/types/content_metadata"
+import { type PageMeta } from "@/types/content_metadata"
 
-	import { dev } from "$app/environment"
-	import {
-		PUBLIC_MINIMUM_TITLE_LENGTH,
-		PUBLIC_PRODUCTION_BASE_URL,
-		PUBLIC_RECOMMENDED_DESCRIPTION_LENGTH
-	} from "$env/static/public"
+import { dev } from "$app/environment"
+import {
+	PUBLIC_MINIMUM_TITLE_LENGTH,
+	PUBLIC_PRODUCTION_BASE_URL,
+	PUBLIC_RECOMMENDED_DESCRIPTION_LENGTH
+} from "$env/static/public"
 
-	import Logo from "@/multimedia/logo.png"
+import Logo from "@/multimedia/logo.png"
 
-	export let pageMeta: PageMeta
+let { pageMeta }: {
+	pageMeta: PageMeta
+} = $props()
 
-	$: if (dev && pageMeta.description.length > Number(PUBLIC_RECOMMENDED_DESCRIPTION_LENGTH)) {
+$effect(() => {
+	if (dev && pageMeta.description.length > Number(PUBLIC_RECOMMENDED_DESCRIPTION_LENGTH)) {
 		console.warn(`Description for page entitled "${pageMeta.title}" is too long.`)
 	}
-	$: if (dev && pageMeta.title.length < Number(PUBLIC_MINIMUM_TITLE_LENGTH)) {
+})
+$effect(() => {
+	if (dev && pageMeta.title.length < Number(PUBLIC_MINIMUM_TITLE_LENGTH)) {
 		console.warn(`Title for page entitled "${pageMeta.title}" is too short.`)
 	}
-	$: designers = pageMeta.designers
-		.map(person => `${person.givenName} ${person.familyName}`)
-		.join(" ")
-	$: canonicalURL = `${PUBLIC_PRODUCTION_BASE_URL}${pageMeta.path}`
+})
+let designers = $derived(pageMeta.designers
+	.map(person => `${person.givenName} ${person.familyName}`)
+	.join(" "))
+let canonicalURL = $derived(`${PUBLIC_PRODUCTION_BASE_URL}${pageMeta.path}`)
 </script>
 
 <title>{pageMeta.title}</title>
