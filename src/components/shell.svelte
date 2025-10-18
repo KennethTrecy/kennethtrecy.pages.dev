@@ -1,28 +1,36 @@
 <script lang="ts">
-	import "@/components/general.css"
+import { type Snippet } from "svelte"
 
-	import Logo from "@/multimedia/logo.png"
-	import { LICENSE, LICENSE_URL } from "@/constants/miscellaneous_meta"
+import Logo from "@/multimedia/logo.png"
 
-	import ExternalLink from "@/components/general/links/external.svelte"
-	import Icon from "@/components/general/icon.svelte"
-	import Menu from "@/components/shell/menu.svelte"
-	import ProfileLink from "@/components/shell/profile_link.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import ThemeToggler from "@/components/shell/theme_toggler.svelte"
-	import toggleBySpace from "@/utilities/toggle_by_space"
+import { LICENSE, LICENSE_URL } from "@/constants/miscellaneous_meta"
 
-	let isMenuShown = false
+import ExternalLink from "@/components/general/links/external.svelte"
+import Icon from "@/components/general/icon.svelte"
+import Menu from "@/components/shell/menu.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import ThemeToggler from "@/components/shell/theme_toggler.svelte"
+import toggleBySpace from "@/utilities/toggle_by_space"
 
-	function toggleMenuThroughMouse(_event: MouseEvent): void {
+let {
+	main
+}: {
+	main: Snippet
+} = $props()
+
+let isMenuShown = $state(false)
+
+function toggleMenuThroughMouse(_event: MouseEvent): void {
+	isMenuShown = !isMenuShown
+}
+
+function toggleMenuThroughKeyboard(event: KeyboardEvent): void {
+	event.preventDefault()
+	event.stopPropagation()
+	toggleBySpace(event, () => {
 		isMenuShown = !isMenuShown
-	}
-
-	function toggleMenuThroughKeyboard(event: KeyboardEvent): void {
-		toggleBySpace(event, () => {
-			isMenuShown = !isMenuShown
-		})
-	}
+	})
+}
 </script>
 
 <svelte:head>
@@ -41,7 +49,7 @@
 		}
 	</style>
 </svelte:head>
-<div itemscope itemtype="https://schema.org/WebSite" class="drawer drawer-mobile">
+<div itemscope itemtype="https://schema.org/WebSite" class="drawer drawer-mobile lg:drawer-open">
 	<input
 		type="checkbox"
 		class="drawer-toggle"
@@ -49,15 +57,15 @@
 		id="menu_drawer_checkbox"
 		bind:checked={isMenuShown}/>
 	<div class="drawer-content">
-		<header class="navbar border-b-[0.05rem] mb-8">
+		<header class="navbar border-b-[0.05rem] mb-8 sticky top-0 left-0 z-5 glass lg:hidden">
 			<button
 				tabindex="0"
 				id="menu_toggler"
 				role="switch"
 				aria-checked={isMenuShown}
 				aria-label="Toggle menu drawer"
-				on:keyup|stopPropagation|preventDefault={toggleMenuThroughKeyboard}
-				on:click={toggleMenuThroughMouse}
+				onkeyup={toggleMenuThroughKeyboard}
+				onclick={toggleMenuThroughMouse}
 				class="drawer-button btn bg-transparent border-transparent lg:hidden text-secondary hover:text-primary hover:bg-secondary">
 				<Icon name="menu"/>
 			</button>
@@ -77,8 +85,8 @@
 			itemprop="mainEntity"
 			itemscope
 			itemtype="https://schema.org/WebPage"
-			class="flex flex-col justify-center items-center">
-			<slot name="main"></slot>
+			class="flex flex-col justify-center items-center pt-8">
+			{@render main()}
 		</main>
 		<footer class="footer footer-center p-4">
 			<div>
@@ -87,11 +95,11 @@
 				</SimpleText>
 			</div>
 		</footer>
-		<footer class="footer justify-around items-center p-4 bg-base-200">
+		<footer class="footer flex flex-row justify-around items-center p-4">
 			<section class="grid-flow-col items-center">
 				<img alt="logo" src={Logo} width="64" height="64" class="flex-none w-16 h-auto"/>
 				<SimpleText itemprop="copyrightNotice">
-					Copyright © <span itemprop="copyrightYear">2024</span>
+					Copyright © <span itemprop="copyrightYear">2025</span>
 					<span itemprop="copyrightHolder">Kenneth Trecy Tobias</span>.
 				</SimpleText>
 			</section>
@@ -108,31 +116,21 @@
 						itemprop="license">{LICENSE} license</ExternalLink>.
 				</p>
 			</section>
-			<section class="socials place-self-end mr-4 md:place-self-auto md:mr-auto justify-center items-center justify-items-center">
-				<span class="footer-title opacity-100">Socials</span>
-				<p itemprop="text" class="grid grid-cols-2 grid-rows-1 gap-x-4">
-					<ProfileLink
-						address="https://www.linkedin.com/in/kenneth-trecy-tobias/"
-						icon="linkedin"
-						name="LinkedIn"/>
-					<ProfileLink
-						address="https://github.com/KennethTrecy/"
-						icon="github"
-						name="GitHub"/>
-				</p>
-			</section>
+			<div class="col-span-1 place-self-stretch text-center hidden lg:block">
+				<ThemeToggler/>
+			</div>
 		</footer>
 	</div>
-	<div class="drawer-side">
+	<div class="drawer-side border-r-[0.05rem]">
 		<button
-			class="drawer-overlay"
+			class="drawer-overlay lg:hidden"
 			tabindex="0"
 			role="switch"
 			aria-checked={isMenuShown}
 			aria-label="Toggle menu drawer"
-			on:keyup|stopPropagation|preventDefault={toggleMenuThroughKeyboard}
-			on:click={toggleMenuThroughMouse}></button>
-		<aside class="w-80 bg-primary">
+			onkeyup={toggleMenuThroughKeyboard}
+			onclick={toggleMenuThroughMouse}></button>
+		<aside class="w-80 glass h-full">
 			<a
 				itemprop="creator" itemscope itemtype="https://schema.org/Person"
 				href="/"
@@ -141,9 +139,7 @@
 					itemprop="image"
 					src={Logo}
 					alt="Logo of Kenneth Trecy"
-					width="288"
-					height="288"
-					class="flex-none w-full h-auto"/>
+					class="flex-none w-50 h-auto mb-4"/>
 				<p itemprop="name" class="flex-1 my-auto text-2xl">
 					KennethTrecy
 				</p>
@@ -156,23 +152,8 @@
 	</div>
 </div>
 
-<style lang="postcss">
-	:root {
-		--main-height: calc(
-			100vh - (
-				4em /** Navbar minimum height **/
-				+ (var(--navbar-padding, 0.5em) * 2)
-				+ 1em + 1.25em /** 1st footer's padding and line height **/
-				+ 1em + 5.25em /** 2nd footer's padding and socials' section height **/
-			)
-		)
-	}
-
-	main {
-		min-height: var(--main-height);
-	}
-
-	footer .socials {
-		grid-area: 1 / 2 / span 1 / span 1;
+<style>
+	footer {
+		background-color: var(--bg-fill);
 	}
 </style>
