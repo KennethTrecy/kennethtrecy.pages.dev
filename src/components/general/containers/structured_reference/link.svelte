@@ -1,34 +1,41 @@
 <script lang="ts">
-	import { type LicenseInfo, type PersonInfo, type ReferenceInfo } from "@/types/reference"
+import { type LicenseInfo, type PersonInfo, type ReferenceInfo } from "@/types/reference"
 
-	import { internalTypes } from "@/components/general/links/constants"
+import { internalTypes } from "@/components/general/links/constants"
 
-	import BaseLink from "@/components/general/links/base.svelte"
-	import BoundLink from "@/components/general/links/bound.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
+import BaseLink from "@/components/general/links/base.svelte"
+import BoundLink from "@/components/general/links/bound.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
 
-	export let info: ReferenceInfo
+let { info }: {
+	info: ReferenceInfo
+} = $props()
 
-	function isPerson(data: ReferenceInfo["author"]): data is PersonInfo {
-		const hasGivenName = Object.keys(info.author).includes("givenName")
-		return hasGivenName
-	}
-	function hasMultipleLicense(data: ReferenceInfo["license"]): data is LicenseInfo[] {
-		return Array.isArray(data)
-	}
+function isPerson(data: ReferenceInfo["author"]): data is PersonInfo {
+	const hasGivenName = Object.keys(info.author).includes("givenName")
+	return hasGivenName
+}
+function hasMultipleLicense(data: ReferenceInfo["license"]): data is LicenseInfo[] {
+	return Array.isArray(data)
+}
 
-	$: isInbound = info.linkCategory === "inbound"
-	$: titleLinkComponent = isInbound ? BaseLink : ExternalLink
-	$: relationship = isInbound ? internalTypes : []
+let isInbound = $derived(info.linkCategory === "inbound")
+let relationship = $derived(isInbound ? internalTypes : [])
 </script>
 
 <cite itemprop="item" itemscope itemtype={info.itemtype}>
 	<span itemprop="copyrightNotice">
-		<svelte:component
-			this={titleLinkComponent}
-			{relationship}
-			address={info.link}
-			itemprop="mainEntityOfPage">{info.title}</svelte:component>
+		{#if isInbound}
+			<BaseLink
+				{relationship}
+				address={info.link}
+				itemprop="mainEntityOfPage">{info.title}</BaseLink>
+		{:else}
+			<ExternalLink
+				{relationship}
+				address={info.link}
+				itemprop="mainEntityOfPage">{info.title}</ExternalLink>
+		{/if}
 		made by
 		{#if isPerson(info.author)}
 			<BoundLink
