@@ -1,23 +1,23 @@
 <script lang="ts">
-	import pageMeta from "@/routes/articles/meta"
+import pageMeta from "@/routes/articles/meta"
 
-	import articleMetaCollection from "@/constants/article_meta_collection"
+import articleMetaCollection from "@/constants/article_meta_collection"
 
-	import CommonHead from "@/components/general/common_head.svelte"
-	import ArticleCard from "@/components/general/card/article.svelte"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
-	import PageDetailCard from "@/components/general/card/page_detail.svelte"
-	import PrimaryHeading from "@/components/general/headings/primary.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import StructuredArticle from "@/components/general/containers/structured_article.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import CommonHead from "@/components/general/common_head.svelte"
+import ArticleCard from "@/components/general/card/article.svelte"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import PageDetailCard from "@/components/general/card/page_detail.svelte"
+import PrimaryHeading from "@/components/general/headings/primary.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import StructuredArticle from "@/components/general/containers/structured_article.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
 
-	const articlesWritten = defineHeadingInfo({
-		"prefix": "✏️",
-		"text": "Articles Written"
-	})
+const articlesWritten = defineHeadingInfo({
+	"prefix": "✏️",
+	"text": "Articles Written"
+})
 </script>
 
 <svelte:head>
@@ -25,8 +25,10 @@
 </svelte:head>
 
 <StructuredArticle>
-	<PrimaryHeading slot="title">{pageMeta.title}</PrimaryHeading>
-	<svelte:fragment slot="content">
+	{#snippet title()}
+		<PrimaryHeading>{pageMeta.title}</PrimaryHeading>
+	{/snippet}
+	{#snippet content()}
 		<StructuredSection
 			id={articlesWritten.id}
 			itemprop="mainEntity"
@@ -43,6 +45,8 @@
 				{/each}
 			</StructuredList>
 		</StructuredSection>
-	</svelte:fragment>
-	<PageDetailCard slot="metadata" {pageMeta}/>
+	{/snippet}
+	{#snippet metadata()}
+		<PageDetailCard {pageMeta}/>
+	{/snippet}
 </StructuredArticle>
