@@ -1,144 +1,140 @@
 <script lang="ts">
-	import { page } from "$app/stores"
-	import { derived } from "svelte/store"
+import { page } from "$app/state"
 
-	import { type ReferenceInfo } from "@/types/reference"
-	import { type CompleteCodeFileInfo } from "@/types/container_info"
+import { type ReferenceInfo } from "@/types/reference"
+import { type CompleteCodeFileInfo } from "@/types/container_info"
 
-	import pageMeta from "@/routes/articles/centering_a_child_element/meta"
-	import indexPageMeta from "@/routes/meta"
-	import {
-		exactWidthDemo,
-		largerWidthDemo
-	} from "@/routes/articles/centering_a_child_element/shared_constants"
+import pageMeta from "@/routes/articles/centering_a_child_element/meta"
+import indexPageMeta from "@/routes/meta"
+import {
+	exactWidthDemo,
+	largerWidthDemo
+} from "@/routes/articles/centering_a_child_element/shared_constants"
 
-	import makeSet from "@/utilities/resource/make_set"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import makeSet from "@/utilities/resource/make_set"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
-	import Citation from "@/components/general/links/citation.svelte"
-	import Keyword from "@/components/general/containers/keyword.svelte"
-	import ExternalLink from "@/components/general/links/external.svelte"
-	import BodyGroup from "@/components/general/containers/body_group.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import ArticlePost from "@/components/general/containers/article_post.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import ExampleCode from "@/components/general/containers/example_code.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
+import Citation from "@/components/general/links/citation.svelte"
+import Keyword from "@/components/general/containers/keyword.svelte"
+import ExternalLink from "@/components/general/links/external.svelte"
+import BodyGroup from "@/components/general/containers/body_group.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import ArticlePost from "@/components/general/containers/article_post.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import ExampleCode from "@/components/general/containers/example_code.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import DescriptiveListItem from "@/components/general/containers/descriptive_list_item.svelte"
 
-	const loadedFileInfos = derived(
-		page,
-		resolvedPage => (resolvedPage.data.loadedFileInfos ?? []) as CompleteCodeFileInfo[]
-	)
+const loadedFileInfos = $derived((page.data.loadedFileInfos ?? []) as CompleteCodeFileInfo[])
 
-	const introduction = defineHeadingInfo({ "text": "Introduction" })
-	const classical = defineHeadingInfo({ "text": "The Classical Way" })
-	const flexbox = defineHeadingInfo({ "text": "Using Flexible Box Layout" })
-	const grid = defineHeadingInfo({ "text": "Using Grid Layout" })
-	const unorthodox = defineHeadingInfo({ "text": "The Unorthodox Way" })
-	const takeaways = defineHeadingInfo({ "text": "Takeaways" })
+const introduction = defineHeadingInfo({ "text": "Introduction" })
+const classical = defineHeadingInfo({ "text": "The Classical Way" })
+const flexbox = defineHeadingInfo({ "text": "Using Flexible Box Layout" })
+const grid = defineHeadingInfo({ "text": "Using Grid Layout" })
+const unorthodox = defineHeadingInfo({ "text": "The Unorthodox Way" })
+const takeaways = defineHeadingInfo({ "text": "Takeaways" })
 
-	const exactWidthDemoSourceSet = makeSet(exactWidthDemo.responsiveLinks)
-	const largerWidthDemoSourceSet = makeSet(largerWidthDemo.responsiveLinks)
+const exactWidthDemoSourceSet = makeSet(exactWidthDemo.responsiveLinks)
+const largerWidthDemoSourceSet = makeSet(largerWidthDemo.responsiveLinks)
 
-	const bootstrapCSSInfo: Partial<ReferenceInfo> = {
-		"itemtype": "https://schema.org/APIReference",
+const bootstrapCSSInfo: Partial<ReferenceInfo> = {
+	"itemtype": "https://schema.org/APIReference",
+	"linkCategory": "outbound",
+	"author": {
+		"groupName": "Twitter, Inc.",
+		"link": "https://investor.twitterinc.com/home/default.aspx"
+	},
+	"license": {
+		"name": "CC BY 3.0",
+		"link": "https://creativecommons.org/licenses/by/3.0/"
+	}
+}
+const references: ReferenceInfo[] = [
+	{
+		...bootstrapCSSInfo as ReferenceInfo,
+		"title": "Grid system",
+		"link": "https://getbootstrap.com/docs/3.4/css/#grid"
+	},
+	{
+		...bootstrapCSSInfo as ReferenceInfo,
+		"title": "Offsetting columns",
+		"link": "https://getbootstrap.com/docs/3.4/css/#grid-offsetting"
+	},
+	{
+		"title": "Web layout history: How we got to grid and flex",
+		"link": "https://cran.r-project.org/web/packages/imola/vignettes/imola-why-flex-and-grid.html",
+		"itemtype": "https://schema.org/SoftwareApplication",
 		"linkCategory": "outbound",
 		"author": {
-			"groupName": "Twitter, Inc.",
-			"link": "https://investor.twitterinc.com/home/default.aspx"
+			"givenName": "Pedro",
+			"familyName": "Silva",
+			"link": "https://github.com/pedrocoutinhosilva"
+		},
+		"license": [
+			{
+				"name": "MIT",
+				"link": "https://cran.r-project.org/web/licenses/MIT"
+			},
+			{
+				"name": "LICENSE",
+				"link": "https://cran.r-project.org/web/packages/imola/LICENSE"
+			}
+		]
+	},
+	{
+		"title": "CSS Grid Layout (level 1) | Can I use... Support tables for HTML5, CSS3, etc",
+		"link": "https://caniuse.com/css-grid",
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Alexis",
+			"familyName": "Deveria",
+			"link": "https://github.com/Fyrd"
 		},
 		"license": {
-			"name": "CC BY 3.0",
-			"link": "https://creativecommons.org/licenses/by/3.0/"
+			"name": "CC BY 4.0",
+			"link": "https://github.com/Fyrd/caniuse/blob/main/LICENSE"
+		}
+	},
+	{
+		"title": indexPageMeta.title,
+		"link": indexPageMeta.pageURL,
+		"itemtype": "https://schema.org/SoftwareApplication",
+		"linkCategory": "inbound",
+		"author": indexPageMeta.authors[0],
+		"license": indexPageMeta.license
+	},
+	{
+		"title": "3 Ways To Center Elements In CSS",
+		"link": "https://dev.to/sanchithasr/3-ways-to-center-elements-in-css-1m43",
+		"itemtype": "https://schema.org/TechArticle",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Sanchitha",
+			"familyName": "Sharma",
+			"link": "https://dev.to/sanchithasr"
 		}
 	}
-	const references: ReferenceInfo[] = [
-		{
-			...bootstrapCSSInfo as ReferenceInfo,
-			"title": "Grid system",
-			"link": "https://getbootstrap.com/docs/3.4/css/#grid"
-		},
-		{
-			...bootstrapCSSInfo as ReferenceInfo,
-			"title": "Offsetting columns",
-			"link": "https://getbootstrap.com/docs/3.4/css/#grid-offsetting"
-		},
-		{
-			"title": "Web layout history: How we got to grid and flex",
-			"link": "https://cran.r-project.org/web/packages/imola/vignettes/imola-why-flex-and-grid.html",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Pedro",
-				"familyName": "Silva",
-				"link": "https://github.com/pedrocoutinhosilva"
-			},
-			"license": [
-				{
-					"name": "MIT",
-					"link": "https://cran.r-project.org/web/licenses/MIT"
-				},
-				{
-					"name": "LICENSE",
-					"link": "https://cran.r-project.org/web/packages/imola/LICENSE"
-				}
-			]
-		},
-		{
-			"title": "CSS Grid Layout (level 1) | Can I use... Support tables for HTML5, CSS3, etc",
-			"link": "https://caniuse.com/css-grid",
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Alexis",
-				"familyName": "Deveria",
-				"link": "https://github.com/Fyrd"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://github.com/Fyrd/caniuse/blob/main/LICENSE"
-			}
-		},
-		{
-			"title": indexPageMeta.title,
-			"link": indexPageMeta.pageURL,
-			"itemtype": "https://schema.org/SoftwareApplication",
-			"linkCategory": "inbound",
-			"author": indexPageMeta.authors[0],
-			"license": indexPageMeta.license
-		},
-		{
-			"title": "3 Ways To Center Elements In CSS",
-			"link": "https://dev.to/sanchithasr/3-ways-to-center-elements-in-css-1m43",
-			"itemtype": "https://schema.org/TechArticle",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Sanchitha",
-				"familyName": "Sharma",
-				"link": "https://dev.to/sanchithasr"
-			}
-		}
-	]
+]
 
-	const styleTagLine = derived(loadedFileInfos, loadedFile => {
-		const [ selfSourceCode ] = loadedFile
-		if (typeof selfSourceCode === "object") {
-			const rawCodeLines = atob(selfSourceCode?.content ?? "\n").split("\n")
-			return rawCodeLines.indexOf(`${"<"}style lang="postcss">`) + 1
-		}
+const styleTagLine = $derived.by(() => {
+	const [ selfSourceCode ] = loadedFileInfos
+	if (typeof selfSourceCode === "object") {
+		const rawCodeLines = atob(selfSourceCode?.content ?? "\n").split("\n")
+		return rawCodeLines.indexOf(`${"<"}style lang="postcss">`) + 1
+	}
 
-		return 0
-	})
-	const classicalBeginLineIndex = derived(styleTagLine, index => index + 10)
-	const classicalEndLineIndex = derived(classicalBeginLineIndex, index => index + 4)
-	const flexibleBeginLineIndex = derived(styleTagLine, index => index + 15)
-	const flexibleEndLineIndex = derived(flexibleBeginLineIndex, index => index + 12)
-	const gridBeginLineIndex = derived(styleTagLine, index => index + 28)
-	const gridEndLineIndex = derived(gridBeginLineIndex, index => index + 12)
-	const unrthodoxBeginLineIndex = derived(styleTagLine, index => index + 41)
-	const unrthodoxEndLineIndex = derived(unrthodoxBeginLineIndex, index => index + 4)
+	return 0
+})
+const classicalBeginLineIndex = $derived(styleTagLine + 10)
+const classicalEndLineIndex = $derived(classicalBeginLineIndex + 4)
+const flexibleBeginLineIndex = $derived(styleTagLine + 15)
+const flexibleEndLineIndex = $derived(flexibleBeginLineIndex + 12)
+const gridBeginLineIndex = $derived(styleTagLine + 28)
+const gridEndLineIndex = $derived(gridBeginLineIndex + 12)
+const unrthodoxBeginLineIndex = $derived(styleTagLine + 41)
+const unrthodoxEndLineIndex = $derived(unrthodoxBeginLineIndex + 4)
 </script>
 
 <ArticlePost {pageMeta}>
@@ -192,9 +188,9 @@
 				The <abbr title="Cascading Style Sheets">CSS</abbr> code for the example above can be seen below. It uses <code>calc()</code> to derive the margin.
 			</SimpleText>
 			<ExampleCode
-				codeInfo={$loadedFileInfos[0]}
-				beginLineIndex={$classicalBeginLineIndex}
-				endLineIndex={$classicalEndLineIndex}/>
+				codeInfo={loadedFileInfos[0]}
+				beginLineIndex={classicalBeginLineIndex}
+				endLineIndex={classicalEndLineIndex}/>
 		</StructuredSection>
 		<StructuredSection id={flexbox.id}>
 			<SecondaryHeading headingInfo={flexbox}/>
@@ -229,14 +225,14 @@
 				Below is corresponding <abbr title="Cascading Style Sheets">CSS</abbr> code to center the children using flexible box layout.
 			</SimpleText>
 			<ExampleCode
-				codeInfo={$loadedFileInfos[0]}
-				beginLineIndex={$flexibleBeginLineIndex}
-				endLineIndex={$flexibleEndLineIndex}/>
+				codeInfo={loadedFileInfos[0]}
+				beginLineIndex={flexibleBeginLineIndex}
+				endLineIndex={flexibleEndLineIndex}/>
 		</StructuredSection>
 		<StructuredSection id={grid.id}>
 			<SecondaryHeading headingInfo={grid}/>
 			<SimpleText>
-				Next method is to use CSS Grid Layout. It is newest among other method layout mechanism. However, <Citation info={references[3]}>more than 96%</Citation> users have browsers that can support it as of this writing, based from <ExternalLink address="https://caniuse.com">caniuse.com</ExternalLink>.
+				Next method is to use CSS Grid Layout. It is newest among other methods of layout mechanism. However, <Citation info={references[3]}>more than 96%</Citation> users have browsers that can support it as of this writing, based from <ExternalLink address="https://caniuse.com">caniuse.com</ExternalLink>.
 			</SimpleText>
 			<SimpleText>
 				Below is an example positioning the child element in the center (in both horizontal and vertical manner) using the grid layout programmed in vanilla <abbr title="Cascading Style Sheets">CSS</abbr>.
@@ -259,9 +255,9 @@
 				Below is corresponding <abbr title="Cascading Style Sheets">CSS</abbr> code to center the child using grid box layout.
 			</SimpleText>
 			<ExampleCode
-				codeInfo={$loadedFileInfos[0]}
-				beginLineIndex={$gridBeginLineIndex}
-				endLineIndex={$gridEndLineIndex}/>
+				codeInfo={loadedFileInfos[0]}
+				beginLineIndex={gridBeginLineIndex}
+				endLineIndex={gridEndLineIndex}/>
 		</StructuredSection>
 		<StructuredSection id={unorthodox.id}>
 			<SecondaryHeading headingInfo={unorthodox}/>
@@ -280,8 +276,7 @@
 				alt={exactWidthDemo.description}
 				class="w-full h-auto bg-primary"/>
 			<SimpleText>
-				To increase the width of the target box, target box should use negative margins to balance.
-				This gives an illusion that the target box is in the center of the parent despite that the child's width is bigger than parent's width. The following steps have been generalized to do the <Keyword>unorthodox way</Keyword>. Note that the instructions were based from comment in the source code of the home page.
+				To increase the width of the target box, target box should use negative margins to balance. This gives an illusion that the target box is in the center of the parent despite that the child's width is bigger than parent's width. The following steps have been generalized to do the <Keyword>unorthodox way</Keyword>. Note that the instructions were based from comment in the source code of the home page.
 			</SimpleText>
 			<StructuredList order="ascending">
 				<DescriptiveListItem>
@@ -351,14 +346,14 @@
 				</p>
 			</div>
 			<ExampleCode
-				codeInfo={$loadedFileInfos[0]}
-				beginLineIndex={$unrthodoxBeginLineIndex}
-				endLineIndex={$unrthodoxEndLineIndex}/>
+				codeInfo={loadedFileInfos[0]}
+				beginLineIndex={unrthodoxBeginLineIndex}
+				endLineIndex={unrthodoxEndLineIndex}/>
 		</StructuredSection>
 		<StructuredSection id={takeaways.id}>
 			<SecondaryHeading headingInfo={takeaways}/>
 			<SimpleText itemprop="about">
-				Despite that there are different methods to position an element in the center, each has benefits and limitations. Centering based on 12-column layout may be rigid at the price of convenience. Using  <code class="terminated">display: flex</code> or  <code class="terminated">display: grid</code>, can center a child element as long as it is smaller than the parent yet not for bigger child. Meanwhile, using negative margins is only applicable bigger child element and not for smaller child element.
+				Despite that there are different methods to position an element in the center, each has benefits and limitations. Centering based on 12-column layout may be rigid at the price of convenience. Using  <code class="terminated">display: flex</code> or  <code class="terminated">display: grid</code>, can center a child element as long as it is smaller than the parent yet not for bigger child. Meanwhile, using negative margins is only applicable on bigger child element and not for smaller child element.
 			</SimpleText>
 			<SimpleText>
 				Usage of these techniques may depend on the programmer's style, requirements of the system being built, or supported browsers. There is no best solution at every scenario when it comes to centering child elements. There are also techniques not mentioned in this article such as using <Citation info={references[5]}><code>position</code> property</Citation> and others. It is left for the readers to study the other techniques.
@@ -368,53 +363,55 @@
 </ArticlePost>
 
 <style lang="postcss">
-	.parent {
-		@apply bg-green-900 h-48;
-		width: calc(5 / 8 * 100%);
-		margin: 0 calc(3 / 16 * 100%);
-	}
+@reference "@/components/general.css";
 
-	.child {
-		@apply bg-green-400 h-24;
-	}
+.parent {
+	@apply bg-green-900 h-48;
+	width: calc(5 / 8 * 100%);
+	margin: 0 calc(3 / 16 * 100%);
+}
 
-	.classical .child {
-		width: calc(4 / 12 * 100%);
-		margin-left: calc(((12 - 4) / 2) / 12 * 100%)
-	}
+.child {
+	@apply bg-green-400 h-24;
+}
 
-	.flexible .parent {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-	}
+.classical .child {
+	width: calc(4 / 12 * 100%);
+	margin-left: calc(((12 - 4) / 2) / 12 * 100%)
+}
 
-	.flexible .child {
-		width: calc(1 / 3 * 100%);
-		margin: 0.1em;
-	}
+.flexible .parent {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+}
 
-	.grid-based .parent {
-		display: grid;
-		grid-template-rows: 1fr 1fr 1fr;
-		grid-template-columns: 1fr 1fr 1fr;
-	}
+.flexible .child {
+	width: calc(1 / 3 * 100%);
+	margin: 0.1em;
+}
 
-	.grid-based .child {
-		grid-row-start: 2;
-		grid-row-end: 3;
-		grid-column-start: 2;
-		grid-column-end: 3;
-	}
+.grid-based .parent {
+	display: grid;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
+}
 
-	.unorthodox .child {
-		width: 140%;
-		margin-left: -20%;
-	}
+.grid-based .child {
+	grid-row-start: 2;
+	grid-row-end: 3;
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
 
-	code.terminated::after {
-		content: ";";
-	}
+.unorthodox .child {
+	width: 140%;
+	margin-left: -20%;
+}
+
+code.terminated::after {
+	content: ";";
+}
 </style>
