@@ -1,8 +1,8 @@
 import rgbToHex from "rgb-hex"
 import { derived, writable } from "svelte/store"
 
-export const DARK_MODE = "dark-logo"
-export const LIGHT_MODE = "light-logo"
+export const DARK_MODE = "night"
+export const LIGHT_MODE = "corporate"
 
 export const mustBeInDarkMode = writable<boolean>(true)
 export const themeName = derived(
@@ -14,14 +14,11 @@ export const themeName = derived(
 )
 export const textColor = derived(
 	themeName,
-	($name, set) => {
+	(name, set) => {
 		const quickDuration = 25
 		setTimeout(() => {
 			if (typeof window !== "undefined") {
-				set(rgbToHex(window.getComputedStyle(
-					document.querySelector(`[data-theme=${$name}]`)
-					|| document.documentElement
-				).color))
+				set(rgbToHex(name === DARK_MODE ? "rgb(255,255,255)" : "rgb(0,0,0)"))
 			}
 		}, quickDuration)
 	}
