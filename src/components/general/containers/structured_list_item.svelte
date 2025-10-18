@@ -1,17 +1,30 @@
 <script lang="ts">
-	import { type ListVariant } from "@/types/container_info"
+import { type Snippet } from "svelte"
+import { type ListVariant } from "@/types/container_info"
 
-	export let itemprop = "itemListElement"
-	export let itemtype = "https://schema.org/ListItem"
-	export let variant: ListVariant = "normal"
-	let otherClasses: string[] = []
+let {
+	itemprop = "itemListElement",
+	itemtype = "https://schema.org/ListItem",
+	variant = "normal",
+	class: otherClasses = [],
+	children
+}: {
+	itemprop?: string
+	itemtype?: string
+	variant?: ListVariant
+	class?: string[]
+	children: Snippet
+} = $props()
 
-	$: initialClasses = variant === "project"
-		? [ "project_list" ]
+const requiredClasses = [ "m-0", "p-0" ]
+
+let initialClasses = $derived(
+	variant === "project"
+		? [ "project_list", ...requiredClasses ]
 		: variant === "card"
-			? [ "card_list" ]
+			? [ "card_list", ...requiredClasses ]
 			: []
-	export { otherClasses as class }
+)
 </script>
 
 <li
@@ -19,11 +32,5 @@
 	itemscope
 	{itemtype}
 	class={[ ...initialClasses, ...otherClasses ].join(" ")}>
-	<slot></slot>
+	{@render children()}
 </li>
-
-<style lang="postcss">
-	li.project_list, li.card_list {
-		@apply m-0 p-0;
-	}
-</style>
