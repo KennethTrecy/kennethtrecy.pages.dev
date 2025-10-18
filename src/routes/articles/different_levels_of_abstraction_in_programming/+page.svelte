@@ -1,204 +1,200 @@
 <script lang="ts">
-	import { onMount } from "svelte"
-	import { page } from "$app/stores"
-	import { derived } from "svelte/store"
+import { onMount } from "svelte"
+import { page } from "$app/state"
 
-	import { type ReferenceInfo } from "@/types/reference"
-	import {
-		type CompleteCodeFileInfo,
-		type ExecutedCommandSetInfo,
-		type HeadingInfo
-	} from "@/types/container_info"
+import { type ReferenceInfo } from "@/types/reference"
+import {
+	type CompleteCodeFileInfo,
+	type ExecutedCommandSetInfo,
+	type HeadingInfo
+} from "@/types/container_info"
 
-	import pageMeta from "@/routes/articles/different_levels_of_abstraction_in_programming/meta"
+import pageMeta from "@/routes/articles/different_levels_of_abstraction_in_programming/meta"
 
-	import { appendReference } from "@/components/general/containers/reference_info_collection"
-	import defineHeadingInfo from "@/utilities/definers/define_heading_info"
+import { appendReference } from "@/components/general/containers/reference_info_collection"
+import defineHeadingInfo from "@/utilities/definers/define_heading_info"
 
-	import Bookmark from "@/components/general/links/bookmark.svelte"
-	import Citation from "@/components/general/links/citation.svelte"
-	import Keyword from "@/components/general/containers/keyword.svelte"
-	import BodyGroup from "@/components/general/containers/body_group.svelte"
-	import SimpleText from "@/components/general/containers/simple_text.svelte"
-	import ArticlePost from "@/components/general/containers/article_post.svelte"
-	import SecondaryHeading from "@/components/general/headings/secondary.svelte"
-	import ExampleCode from "@/components/general/containers/example_code.svelte"
-	import SimpleThing from "@/components/general/containers/simple_thing.svelte"
-	import ExampleOutput from "@/components/general/containers/example_output.svelte"
-	import StructuredList from "@/components/general/containers/structured_list.svelte"
-	import StructuredSection from "@/components/general/containers/structured_section.svelte"
-	import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
+import Bookmark from "@/components/general/links/bookmark.svelte"
+import Citation from "@/components/general/links/citation.svelte"
+import Keyword from "@/components/general/containers/keyword.svelte"
+import BodyGroup from "@/components/general/containers/body_group.svelte"
+import SimpleText from "@/components/general/containers/simple_text.svelte"
+import ArticlePost from "@/components/general/containers/article_post.svelte"
+import SecondaryHeading from "@/components/general/headings/secondary.svelte"
+import ExampleCode from "@/components/general/containers/example_code.svelte"
+import SimpleThing from "@/components/general/containers/simple_thing.svelte"
+import ExampleOutput from "@/components/general/containers/example_output.svelte"
+import StructuredList from "@/components/general/containers/structured_list.svelte"
+import StructuredSection from "@/components/general/containers/structured_section.svelte"
+import StructuredListItem from "@/components/general/containers/structured_list_item.svelte"
 
-	const loadedFileInfos = derived(
-		page,
-		resolvedPage => (resolvedPage.data.loadedFileInfos ?? []) as CompleteCodeFileInfo[]
-	)
+const loadedFileInfos = $derived<CompleteCodeFileInfo[]>(page.data.loadedFileInfos ?? [])
 
-	const introduction = defineHeadingInfo({ "text": "Introduction" })
-	const levels: HeadingInfo<"defined">[] = [
-		{ "text": "Package-level Abstraction" },
-		{ "text": "Configuration-level Abstraction" },
-		{ "text": "Variable-level Abstraction" },
-		{ "text": "Function-level Abstraction" },
-		{ "text": "Object-level Abstraction" },
-		{ "text": "Interface-level Abstraction" }
-	].map(defineHeadingInfo)
-	const conclusion = defineHeadingInfo({ "text": "Conclusion" })
+const introduction = defineHeadingInfo({ "text": "Introduction" })
+const levels: HeadingInfo<"defined">[] = [
+	{ "text": "Package-level Abstraction" },
+	{ "text": "Configuration-level Abstraction" },
+	{ "text": "Variable-level Abstraction" },
+	{ "text": "Function-level Abstraction" },
+	{ "text": "Object-level Abstraction" },
+	{ "text": "Interface-level Abstraction" }
+].map(defineHeadingInfo)
+const conclusion = defineHeadingInfo({ "text": "Conclusion" })
 
-	const packageLevelExecutedCommandInfo = derived(loadedFileInfos, resolvedFiles => ({
-		"description": "This is the output after running the package-level code.",
-		"commands": [
-			{
-				"command": `npx ts-node ${resolvedFiles[0]?.path ?? ""}`,
-				"output": [
-					{ "text": "What is your first name? Kenneth" },
-					{ "text": "What is your last name? Tobias" },
-					{ "text": "What is your age? 10" },
-					{ "text": "How many meters did you walk? 100" },
-					{ "text": "You are Kenneth Tobias." },
-					{ "text": "Your age is 10 and you have walked for 100 meters.\n" }
-				]
-			}
-		]
-	} as ExecutedCommandSetInfo))
-	const environmentLevelExecutedCommandInfo = derived(loadedFileInfos, resolvedFiles => ({
-		"description": "This is the output after running the configuration-level code. Notice that the questions for first name and last name have changed according to the questions in environment file.",
-		"commands": [
-			{
-				"command": `npx ts-node ${resolvedFiles[1]?.path ?? ""}`,
-				"output": [
-					{ "text": "Enter your first name:Kenneth" },
-					{ "text": "Enter your last name:Tobias" },
-					{ "text": "What is your age? 10" },
-					{ "text": "How many meters did you walk? 100" },
-					{ "text": "You are Kenneth Tobias." },
-					{ "text": "Your age is 10 and you have walked for 100 meters.\n" }
-				]
-			}
-		]
-	} as ExecutedCommandSetInfo))
-
-	const references: ReferenceInfo[] = [
+const packageLevelExecutedCommandInfo = $derived<ExecutedCommandSetInfo>({
+	"description": "This is the output after running the package-level code.",
+	"commands": [
 		{
-			"title": "dotenv",
-			"link": "github.com/motdotla/dotenv#readme",
-			"itemtype": "https://schema.org/SoftwareSourceCode",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Scott",
-				"familyName": "Motte",
-				"link": "https://github.com/motdotla"
-			},
-			"license": {
-				"name": "BSD-2-Clause",
-				"link": "https://github.com/motdotla/dotenv/blob/master/LICENSE"
-			}
-		}, {
-			"title": "Arduino Tutorial 4: Understanding Arduino Variables",
-			"link": "https://www.youtube.com/watch?v=nPOKOi1jIK0",
-			"itemtype": "https://schema.org/SoftwareSourceCode",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Paul",
-				"familyName": "McWhorter",
-				"link": "https://www.patreon.com/PaulMcWhorter"
-			}
-		}, {
-			"title": "PHP: Class Abstraction - Manual",
-			"link": "https://www.php.net/manual/en/language.oop5.abstract.php",
-			"itemtype": "https://schema.org/CreativeWork",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "PHP Documentation Group",
-				"link": "https://www.php.net/manual/en/preface.php#contributors"
-			},
-			"license": {
-				"name": "CC BY 3.0",
-				"link": "https://www.php.net/manual/en/cc.license.php"
-			}
-		}, {
-			"title": "Templates (C++)",
-			"link": "https://learn.microsoft.com/en-us/cpp/cpp/templates-cpp?view=msvc-170",
-			"itemtype": "https://schema.org/CreativeWork",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Microsoft Corporation",
-				"link": "https://www.microsoft.com"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://github.com/MicrosoftDocs/cpp-docs/blob/main/LICENSE"
-			}
-		}, {
-			"title": "Traits: Defining Shared Behavior - The Rust Programming Language",
-			"link": "https://doc.rust-lang.org/book/ch10-02-traits.html",
-			"itemtype": "https://schema.org/CreativeWork",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Rust Project Developers",
-				"link": "https://github.com/rust-lang/book/graphs/contributors"
-			},
-			"license": [
-				{
-					"name": "MIT",
-					"link": "https://github.com/rust-lang/book/blob/main/LICENSE-MIT"
-				}, {
-					"name": "Apache License, Version 2.0",
-					"link": "https://github.com/rust-lang/book/blob/main/LICENSE-APACHE"
-				}
-			]
-		}, {
-			"title": "TypeScript: Documentation - Generics",
-			"link": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
-			"itemtype": "https://schema.org/CreativeWork",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "Microsoft Corporation",
-				"link": "https://www.microsoft.com"
-			},
-			"license": {
-				"name": "CC BY 4.0",
-				"link": "https://github.com/microsoft/TypeScript-Website/blob/v2/LICENSE"
-			}
-		}, {
-			"title": "Macros - The Rust Reference",
-			"link": "https://doc.rust-lang.org/reference/macros.html",
-			"itemtype": "https://schema.org/CreativeWork",
-			"linkCategory": "outbound",
-			"author": {
-				"groupName": "The Rust Project Developers",
-				"link": "https://github.com/rust-lang/reference/graphs/contributors"
-			},
-			"license": [
-				{
-					"name": "MIT",
-					"link": "https://github.com/rust-lang/reference/blob/master/LICENSE-MIT"
-				}, {
-					"name": "Apache License, Version 2.0",
-					"link": "https://github.com/rust-lang/reference/blob/master/LICENSE-APACHE"
-				}
+			"command": `npx ts-node ${loadedFileInfos[0]?.path ?? ""}`,
+			"output": [
+				{ "text": "What is your first name? Kenneth" },
+				{ "text": "What is your last name? Tobias" },
+				{ "text": "What is your age? 10" },
+				{ "text": "How many meters did you walk? 100" },
+				{ "text": "You are Kenneth Tobias." },
+				{ "text": "Your age is 10 and you have walked for 100 meters.\n" }
 			]
 		}
 	]
+})
+const environmentLevelExecutedCommandInfo = $derived<ExecutedCommandSetInfo>({
+	"description": "This is the output after running the configuration-level code. Notice that the questions for first name and last name have changed according to the questions in environment file.",
+	"commands": [
+		{
+			"command": `npx ts-node ${loadedFileInfos[1]?.path ?? ""}`,
+			"output": [
+				{ "text": "Enter your first name:Kenneth" },
+				{ "text": "Enter your last name:Tobias" },
+				{ "text": "What is your age? 10" },
+				{ "text": "How many meters did you walk? 100" },
+				{ "text": "You are Kenneth Tobias." },
+				{ "text": "Your age is 10 and you have walked for 100 meters.\n" }
+			]
+		}
+	]
+})
 
-	onMount(() => {
-		// Source code reference
-		appendReference({
-			"title": "demo_of_different_levels_of_abstraction",
-			"link": "https://github.com/KennethTrecy/demo_of_different_levels_of_abstraction",
-			"itemtype": "https://schema.org/SoftwareSourceCode",
-			"linkCategory": "outbound",
-			"author": {
-				"givenName": "Kenneth Trecy",
-				"familyName": "Tobias",
-				"link": "https://github.com/KennethTrecy"
-			},
-			"license": {
+const references: ReferenceInfo[] = [
+	{
+		"title": "dotenv",
+		"link": "github.com/motdotla/dotenv#readme",
+		"itemtype": "https://schema.org/SoftwareSourceCode",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Scott",
+			"familyName": "Motte",
+			"link": "https://github.com/motdotla"
+		},
+		"license": {
+			"name": "BSD-2-Clause",
+			"link": "https://github.com/motdotla/dotenv/blob/master/LICENSE"
+		}
+	}, {
+		"title": "Arduino Tutorial 4: Understanding Arduino Variables",
+		"link": "https://www.youtube.com/watch?v=nPOKOi1jIK0",
+		"itemtype": "https://schema.org/SoftwareSourceCode",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Paul",
+			"familyName": "McWhorter",
+			"link": "https://www.patreon.com/PaulMcWhorter"
+		}
+	}, {
+		"title": "PHP: Class Abstraction - Manual",
+		"link": "https://www.php.net/manual/en/language.oop5.abstract.php",
+		"itemtype": "https://schema.org/CreativeWork",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "PHP Documentation Group",
+			"link": "https://www.php.net/manual/en/preface.php#contributors"
+		},
+		"license": {
+			"name": "CC BY 3.0",
+			"link": "https://www.php.net/manual/en/cc.license.php"
+		}
+	}, {
+		"title": "Templates (C++)",
+		"link": "https://learn.microsoft.com/en-us/cpp/cpp/templates-cpp?view=msvc-170",
+		"itemtype": "https://schema.org/CreativeWork",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Microsoft Corporation",
+			"link": "https://www.microsoft.com"
+		},
+		"license": {
+			"name": "CC BY 4.0",
+			"link": "https://github.com/MicrosoftDocs/cpp-docs/blob/main/LICENSE"
+		}
+	}, {
+		"title": "Traits: Defining Shared Behavior - The Rust Programming Language",
+		"link": "https://doc.rust-lang.org/book/ch10-02-traits.html",
+		"itemtype": "https://schema.org/CreativeWork",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The Rust Project Developers",
+			"link": "https://github.com/rust-lang/book/graphs/contributors"
+		},
+		"license": [
+			{
 				"name": "MIT",
-				"link": "https://github.com/KennethTrecy/demo_of_different_levels_of_abstraction/blob/master/LICENSE"
+				"link": "https://github.com/rust-lang/book/blob/main/LICENSE-MIT"
+			}, {
+				"name": "Apache License, Version 2.0",
+				"link": "https://github.com/rust-lang/book/blob/main/LICENSE-APACHE"
 			}
-		})
+		]
+	}, {
+		"title": "TypeScript: Documentation - Generics",
+		"link": "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+		"itemtype": "https://schema.org/CreativeWork",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "Microsoft Corporation",
+			"link": "https://www.microsoft.com"
+		},
+		"license": {
+			"name": "CC BY 4.0",
+			"link": "https://github.com/microsoft/TypeScript-Website/blob/v2/LICENSE"
+		}
+	}, {
+		"title": "Macros - The Rust Reference",
+		"link": "https://doc.rust-lang.org/reference/macros.html",
+		"itemtype": "https://schema.org/CreativeWork",
+		"linkCategory": "outbound",
+		"author": {
+			"groupName": "The Rust Project Developers",
+			"link": "https://github.com/rust-lang/reference/graphs/contributors"
+		},
+		"license": [
+			{
+				"name": "MIT",
+				"link": "https://github.com/rust-lang/reference/blob/master/LICENSE-MIT"
+			}, {
+				"name": "Apache License, Version 2.0",
+				"link": "https://github.com/rust-lang/reference/blob/master/LICENSE-APACHE"
+			}
+		]
+	}
+]
+
+onMount(() => {
+	// Source code reference
+	appendReference({
+		"title": "demo_of_different_levels_of_abstraction",
+		"link": "https://github.com/KennethTrecy/demo_of_different_levels_of_abstraction",
+		"itemtype": "https://schema.org/SoftwareSourceCode",
+		"linkCategory": "outbound",
+		"author": {
+			"givenName": "Kenneth Trecy",
+			"familyName": "Tobias",
+			"link": "https://github.com/KennethTrecy"
+		},
+		"license": {
+			"name": "MIT",
+			"link": "https://github.com/KennethTrecy/demo_of_different_levels_of_abstraction/blob/master/LICENSE"
+		}
 	})
+})
 </script>
 
 <ArticlePost {pageMeta}>
@@ -240,10 +236,10 @@
 			<SimpleText>
 				Below is another example of a program which asks for user's first name, last name, age, and distance walked. Notice that there are repetitive statements and may take time to read.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[0]}>
+			<ExampleCode codeInfo={loadedFileInfos[0]}>
 				<ExampleOutput
-					commandInfos={$packageLevelExecutedCommandInfo}
-					codeInfo={$loadedFileInfos[0]}/>
+					commandInfos={packageLevelExecutedCommandInfo}
+					codeInfo={loadedFileInfos[0]}/>
 			</ExampleCode>
 		</StructuredSection>
 		<StructuredSection id={levels[1].id}>
@@ -262,14 +258,14 @@
 					levels[0].text.toLocaleLowerCase()
 				}'s example</Bookmark>, the program can be modified to allow configuration-level customization. It uses an external package named <Citation info={references[0]}>dotenv</Citation> package to use the environment variables by using <code>process<span>.</span>env.&lt;variable name&gt;</code>. Note that the program uses logical OR operator (<code>||</code>) in order to use default messages.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[1]}>
+			<ExampleCode codeInfo={loadedFileInfos[1]}>
 				<SimpleText>
 					There are different methods to declare environment variables. Below, it is an example of <code>.env</code> file to declare them. Note that some variables in the environment do not have a declared value. Therefore, the program will use default values for those empty variables.
 				</SimpleText>
-				<ExampleCode itemprop="hasPart" codeInfo={$loadedFileInfos[2]}/>
+				<ExampleCode itemprop="hasPart" codeInfo={loadedFileInfos[2]}/>
 				<ExampleOutput
-					commandInfos={$environmentLevelExecutedCommandInfo}
-					codeInfo={$loadedFileInfos[1]}/>
+					commandInfos={environmentLevelExecutedCommandInfo}
+					codeInfo={loadedFileInfos[1]}/>
 			</ExampleCode>
 		</StructuredSection>
 		<StructuredSection id={levels[2].id}>
@@ -290,7 +286,7 @@
 					levels[1].text.toLocaleLowerCase()
 				}</Bookmark>, default messages can be put in global scope allowing other developers find the default messages quickly.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[3]}/>
+			<ExampleCode codeInfo={loadedFileInfos[3]}/>
 		</StructuredSection>
 		<StructuredSection id={levels[3].id}>
 			<SecondaryHeading headingInfo={levels[3]}/>
@@ -305,15 +301,15 @@
 					levels[2].text.toLocaleLowerCase()
 				}'s example</Bookmark>, repeated statements on reading a string can be summarized into one function. Therefore, it is quicker to read.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[4]}/>
+			<ExampleCode codeInfo={loadedFileInfos[4]}/>
 			<SimpleText>
 				Repeated statements on reading an integer can also be summarized.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[5]}/>
+			<ExampleCode codeInfo={loadedFileInfos[5]}/>
 			<SimpleText>
 				There are similarities between the two new functions. Generalizing it further, it becomes something like below.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[6]}/>
+			<ExampleCode codeInfo={loadedFileInfos[6]}/>
 		</StructuredSection>
 		<StructuredSection id={levels[4].id}>
 			<SecondaryHeading headingInfo={levels[4]}/>
@@ -332,7 +328,7 @@
 					levels[3].text.toLocaleLowerCase()
 				}'s last example</Bookmark>. It uses classes and the concept of inheritance to reuse the code. There are four instances in this code which are contained in variables declared at line 47, 50, 53, and 56.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[7]}/>
+			<ExampleCode codeInfo={loadedFileInfos[7]}/>
 		</StructuredSection>
 		<StructuredSection id={levels[5].id}>
 			<SecondaryHeading headingInfo={levels[5]}/>
@@ -353,13 +349,13 @@
 					levels[0].text.toLocaleLowerCase()
 				}</Bookmark>. However, making an interface-level abstraction has greater benefits on large projects than this example.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[8]}/>
+			<ExampleCode codeInfo={loadedFileInfos[8]}/>
 			<SimpleText>
 				In addition, an example based from <Bookmark fragment={`#${levels[3].id}`}>{
 					levels[3].text.toLocaleLowerCase()
 				}'s example</Bookmark> but with the application of <Citation info={references[5]}>Typescript's generics</Citation> too. It appears to be shorter than the code above.
 			</SimpleText>
-			<ExampleCode codeInfo={$loadedFileInfos[9]}/>
+			<ExampleCode codeInfo={loadedFileInfos[9]}/>
 		</StructuredSection>
 		<StructuredSection id={conclusion.id}>
 			<SecondaryHeading headingInfo={conclusion}/>
