@@ -6,7 +6,7 @@ export default {
 		"./src/components/**/*.svelte",
 		"./src/routes/**/*.svelte"
 	],
-	"darkMode": "[data-them='dark-logo']",
+	"darkMode": "[data-theme='night']",
 	"theme": {
 		"extend": {
 			"container": {
