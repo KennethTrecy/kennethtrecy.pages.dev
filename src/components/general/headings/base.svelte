@@ -40,7 +40,8 @@ let tag = $derived(
 	onmouseout={_event => isMouseIn = false}
 	onblur={_event => isMouseIn = false}
 	onmouseover={_event => isMouseIn = true}
-	onfocus={_event => isMouseIn = true}>
+	onfocus={_event => isMouseIn = true}
+	role="heading">
 	{@render children()}
 	{#if mayUseBookmark}
 		<Bookmark
