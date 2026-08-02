@@ -31,8 +31,5 @@ export default defineConfig(({ mode }) => ({
 	"test": {
 		"environment": "jsdom",
 		"include": [ "src/**/*.spec.ts" ]
-	},
-	"resolve":	{
-		"conditions": mode === "test" ? ["browser"] : [],
-	},
+	}
 }))
