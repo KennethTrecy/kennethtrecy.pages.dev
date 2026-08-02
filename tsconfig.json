@@ -19,6 +19,6 @@
 		"src/**/*.svelte"
 	],
 	"exclude": [
-		"src/hooks.server.js"
+		"src/hooks.server.disabled.js"
 	]
 }
