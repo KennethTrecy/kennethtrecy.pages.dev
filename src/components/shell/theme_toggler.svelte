@@ -16,13 +16,15 @@ $effect(() => {
 	}
 });
 let modeIcon = $derived($mustBeInDarkMode ? "dark_mode" : "light_mode")
-let currentTheme = $derived($mustBeInDarkMode ? DARK_MODE : LIGHT_MODE)
+let unusedTheme = $derived($mustBeInDarkMode ? LIGHT_MODE : DARK_MODE)
 
 onMount(() => {
 	themeChange(false)
-	$mustBeInDarkMode = document.documentElement
-		.dataset
-		.theme === DARK_MODE
+	setTimeout(() => {
+		$mustBeInDarkMode = document.documentElement
+			.dataset
+			.theme === DARK_MODE
+	}, 1000)
 })
 
 function toggleThemeThoughMouse(_event: MouseEvent): void {
@@ -42,7 +44,7 @@ function toggleThemeThroughKeyboard(event: KeyboardEvent): void {
 	tabindex="0"
 	role="switch"
 	aria-checked={$mustBeInDarkMode}
-	data-set-theme={currentTheme}
+	data-set-theme={unusedTheme}
 	data-act-class={LIGHT_MODE}
 	aria-label="Toggle theme"
 	onkeyup={toggleThemeThroughKeyboard}
